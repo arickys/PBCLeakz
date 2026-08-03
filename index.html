@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>CARTI LEAKS • VOID ARCHIVE</title>
+  <title>PBCLEAKZ</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      cursor: none !important;
     }
 
     body {
@@ -22,81 +21,6 @@
       -webkit-tap-highlight-color: rgba(180, 0, 0, 0.2);
       background-image: radial-gradient(rgba(25, 0, 0, 0.5) 1px, transparent 1px);
       background-size: 30px 30px;
-      cursor: none !important;
-    }
-
-    .custom-cursor {
-      position: fixed;
-      pointer-events: none;
-      z-index: 99999;
-      width: 36px;
-      height: 36px;
-      transform: translate(-50%, -50%);
-      mix-blend-mode: difference;
-      filter: drop-shadow(0 0 12px rgba(255,0,0,1)) drop-shadow(0 0 30px rgba(200,0,0,0.8));
-      will-change: left, top;
-      transition: width 0.1s, height 0.1s;
-    }
-
-    .custom-cursor::before,
-    .custom-cursor::after {
-      content: '';
-      position: absolute;
-      background: #ff1a1a;
-      box-shadow: 0 0 15px #ff0000, 0 0 35px #cc0000, 0 0 60px #880000;
-      border-radius: 1px;
-    }
-
-    .custom-cursor::before {
-      width: 32px;
-      height: 3px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .custom-cursor::after {
-      width: 3px;
-      height: 32px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .cursor-dot {
-      position: fixed;
-      pointer-events: none;
-      z-index: 99999;
-      width: 8px;
-      height: 8px;
-      background: #ffffff;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 25px #ff0000, 0 0 50px #ff0000, 0 0 80px #cc0000;
-      mix-blend-mode: difference;
-      will-change: left, top;
-      transition: width 0.1s, height 0.1s;
-    }
-
-    .custom-cursor.hovering {
-      width: 48px;
-      height: 48px;
-    }
-
-    .custom-cursor.hovering::before {
-      width: 42px;
-      height: 4px;
-    }
-
-    .custom-cursor.hovering::after {
-      width: 4px;
-      height: 42px;
-    }
-
-    .cursor-dot.hovering {
-      width: 12px;
-      height: 12px;
-      box-shadow: 0 0 35px #ff0000, 0 0 70px #ff0000, 0 0 100px #ff0000;
     }
 
     .intro-overlay {
@@ -116,7 +40,6 @@
         linear-gradient(45deg, rgba(40,0,0,0.3) 1px, transparent 1px),
         linear-gradient(-45deg, rgba(30,0,0,0.25) 1px, transparent 1px);
       background-size: 50px 50px;
-      cursor: none !important;
     }
 
     .intro-overlay.hidden {
@@ -140,12 +63,10 @@
       color: #ffffff;
       text-transform: uppercase;
       font-family: 'Inter', 'Helvetica Neue', sans-serif;
-      text-shadow: 8px 8px 0 #4a0000, -6px -6px 0 #000000, 0 0 80px rgba(255,0,0,0.6), 0 0 150px rgba(200,0,0,0.4);
+      text-shadow: 8px 8px 0 #4a0000, -6px -6px 0 #000000, 0 0 80px rgba(255,0,0,0.6);
       transform: skew(-5deg);
-      animation: brutalGlitch 1.2s infinite;
       line-height: 0.75;
       position: relative;
-      cursor: none !important;
     }
 
     .intro-title::after {
@@ -159,38 +80,7 @@
       opacity: 0.2;
       transform: translate(8px, -5px);
       z-index: -1;
-      animation: glitchShift 0.15s infinite;
       text-shadow: 0 0 40px #ff0000;
-    }
-
-    .intro-title::before {
-      content: 'CARTI';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      color: #00ffff;
-      opacity: 0.1;
-      transform: translate(-6px, 4px);
-      z-index: -2;
-      animation: glitchShift 0.2s infinite reverse;
-    }
-
-    @keyframes brutalGlitch {
-      0%, 100% { transform: skew(-5deg) translate(0,0); }
-      2% { transform: skew(4deg) translate(-8px, 4px); }
-      4% { transform: skew(-3deg) translate(6px, -4px); }
-      6% { transform: skew(-5deg) translate(0,0); }
-      10% { transform: skew(-5deg) translate(0,0); }
-      10.5% { transform: skew(6deg) translate(-4px, 3px); }
-      11% { transform: skew(-4deg) translate(0,0); }
-    }
-
-    @keyframes glitchShift {
-      0%, 100% { transform: translate(8px, -5px); opacity: 0.2; }
-      33% { transform: translate(-6px, 3px); opacity: 0.3; }
-      66% { transform: translate(4px, -2px); opacity: 0.15; }
     }
 
     .click-trigger {
@@ -198,7 +88,6 @@
       flex-direction: column;
       align-items: center;
       gap: 1.2rem;
-      cursor: none !important;
       transition: transform 0.1s ease;
       padding: 0.5rem;
     }
@@ -214,38 +103,21 @@
       color: #aaaaaa;
       border: 2px solid rgba(220, 0, 0, 0.5);
       padding: 1.2rem 3.5rem;
-      background: rgba(8, 0, 0, 0.9);
+      background: #0a0000;
       backdrop-filter: blur(30px);
       text-transform: uppercase;
       transition: all 0.2s;
       font-family: 'Inter', monospace;
-      box-shadow: 0 0 50px rgba(220, 0, 0, 0.35), inset 0 0 30px rgba(200,0,0,0.1);
-      background: #0a0000;
+      box-shadow: 0 0 50px rgba(220, 0, 0, 0.35);
       position: relative;
       overflow: hidden;
-      cursor: none !important;
-    }
-
-    .open-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,0,0,0.2), transparent);
-      transition: left 0.4s;
-    }
-
-    .click-trigger:hover .open-button::before {
-      left: 100%;
     }
 
     .click-trigger:hover .open-button {
       background: #1a0000;
       border-color: #ff3333;
       color: #ffffff;
-      box-shadow: 0 0 80px rgba(255, 0, 0, 0.8), inset 0 0 50px rgba(255,0,0,0.2);
+      box-shadow: 0 0 80px rgba(255, 0, 0, 0.8);
       letter-spacing: 0.7em;
       text-shadow: 0 0 20px #ff0000;
     }
@@ -256,13 +128,6 @@
       letter-spacing: 0.5em;
       text-transform: uppercase;
       margin-top: 0.3rem;
-      cursor: none !important;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 1; }
     }
 
     .main-container {
@@ -282,9 +147,7 @@
       z-index: 800;
       background-image: 
         radial-gradient(circle at 25% 35%, rgba(80,0,0,0.35) 0%, transparent 50%),
-        radial-gradient(circle at 75% 65%, rgba(60,0,0,0.3) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(20,0,0,0.2) 0%, transparent 70%);
-      cursor: none !important;
+        radial-gradient(circle at 75% 65%, rgba(60,0,0,0.3) 0%, transparent 50%);
     }
 
     .main-container.active {
@@ -296,15 +159,9 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      background: repeating-linear-gradient(0deg, rgba(255,0,0,0.08) 0px, transparent 2px, rgba(0,0,0,0.95) 4px);
+      background: repeating-linear-gradient(0deg, rgba(255,0,0,0.06) 0px, transparent 2px, rgba(0,0,0,0.9) 4px);
       pointer-events: none;
       z-index: 30;
-      animation: scanlines 0.06s infinite;
-    }
-
-    @keyframes scanlines {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(6px); }
     }
 
     .grid-texture {
@@ -312,22 +169,10 @@
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(80,0,0,0.25) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(80,0,0,0.2) 1px, transparent 1px);
+        linear-gradient(rgba(80,0,0,0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(80,0,0,0.15) 1px, transparent 1px);
       background-size: 50px 50px;
-      mask-image: radial-gradient(circle at 50% 45%, black 15%, transparent 80%);
       pointer-events: none;
-    }
-
-    .noise-overlay {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 35;
-      opacity: 0.6;
-      mix-blend-mode: overlay;
     }
 
     .content-center {
@@ -338,7 +183,6 @@
       flex-direction: column;
       align-items: center;
       gap: 1.8rem;
-      cursor: none !important;
     }
 
     .brand-leak {
@@ -348,22 +192,15 @@
       letter-spacing: -0.05em;
       color: transparent;
       -webkit-text-stroke: 3px #e0e0e0;
-      background: linear-gradient(180deg, #ffffff 0%, #800000 85%, #4a0000 100%);
+      background: linear-gradient(180deg, #ffffff 0%, #800000 85%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 60px #cc0000) drop-shadow(0 0 100px #880000);
+      filter: drop-shadow(0 0 60px #cc0000);
       font-family: 'Inter', 'Helvetica Neue', sans-serif;
       transform: skew(-4deg);
       line-height: 0.85;
-      animation: mainFlicker 2s infinite;
       margin-bottom: 0.3rem;
-      cursor: none !important;
-    }
-
-    @keyframes mainFlicker {
-      0%, 18%, 22%, 25%, 52%, 56%, 100% { opacity: 1; filter: drop-shadow(0 0 60px #cc0000) drop-shadow(0 0 100px #880000); }
-      20%, 24%, 54% { opacity: 0.6; filter: drop-shadow(0 0 90px #ff0000) drop-shadow(0 0 140px #ff0000); }
     }
 
     .sub-label {
@@ -378,8 +215,6 @@
       backdrop-filter: blur(15px);
       padding-left: 1.5rem;
       padding-right: 1.5rem;
-      cursor: none !important;
-      text-shadow: 0 0 20px rgba(255,0,0,0.4);
     }
 
     .leak-tracks {
@@ -389,7 +224,6 @@
       justify-content: center;
       gap: 2.2rem;
       margin: 2.2rem 0 2.8rem;
-      cursor: none !important;
     }
 
     .track {
@@ -404,35 +238,16 @@
       background: rgba(15, 0, 0, 0.6);
       backdrop-filter: blur(8px);
       position: relative;
-      cursor: none !important;
-      text-shadow: 0 0 10px rgba(0,0,0,0.8);
     }
 
     .track:hover {
       color: #ffffff;
       border-left: 4px solid #ff1a1a;
-      text-shadow: 0 0 25px #ff0000, 0 0 50px #ff0000;
+      text-shadow: 0 0 25px #ff0000;
       letter-spacing: 0.4em;
       background: rgba(35, 0, 0, 0.85);
       transform: translateX(6px);
-      box-shadow: 0 0 35px rgba(255,0,0,0.5), 0 0 60px rgba(200,0,0,0.3);
-      padding-left: 2.2rem;
-    }
-
-    .track::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 100%;
-      background: rgba(255,0,0,0.08);
-      transition: width 0.2s;
-      z-index: -1;
-    }
-
-    .track:hover::after {
-      width: 100%;
+      box-shadow: 0 0 35px rgba(255,0,0,0.5);
     }
 
     .void-stamp {
@@ -446,9 +261,6 @@
       letter-spacing: 0.6em;
       transform: rotate(-1deg);
       font-weight: 600;
-      cursor: none !important;
-      box-shadow: 0 0 30px rgba(200,0,0,0.2);
-      text-shadow: 0 0 15px rgba(255,0,0,0.3);
     }
 
     .footer-quote {
@@ -457,8 +269,6 @@
       font-size: 0.75rem;
       letter-spacing: 0.4em;
       font-style: italic;
-      cursor: none !important;
-      text-shadow: 0 0 10px rgba(200,0,0,0.3);
     }
 
     .corner-signal {
@@ -469,8 +279,6 @@
       font-size: 0.75rem;
       letter-spacing: 0.35em;
       z-index: 70;
-      cursor: none !important;
-      text-shadow: 0 0 15px rgba(255,0,0,0.4);
     }
     
     .corner-right {
@@ -481,31 +289,6 @@
       font-size: 0.75rem;
       letter-spacing: 0.4em;
       z-index: 70;
-      cursor: none !important;
-      text-shadow: 0 0 15px rgba(255,0,0,0.4);
-    }
-
-    .glitch-artifact {
-      position: absolute;
-      width: 100%;
-      height: 3px;
-      background: rgba(255,0,0,0.15);
-      pointer-events: none;
-      z-index: 40;
-      animation: artifactMove 4s infinite;
-    }
-
-    @keyframes artifactMove {
-      0% { top: 10%; opacity: 0; }
-      10% { opacity: 1; }
-      20% { top: 85%; opacity: 0; }
-      30% { top: 40%; opacity: 0.8; }
-      40% { top: 15%; opacity: 0; }
-      100% { top: 10%; opacity: 0; }
-    }
-
-    a, button, input, select, textarea, [onclick], div, span, p, h1, h2, h3, h4, h5, h6 {
-      cursor: none !important;
     }
 
     @media (max-width: 650px) {
@@ -517,22 +300,6 @@
         padding: 0.9rem 2.2rem;
         letter-spacing: 0.4em;
       }
-      .custom-cursor {
-        width: 28px;
-        height: 28px;
-      }
-      .custom-cursor::before {
-        width: 24px;
-        height: 2.5px;
-      }
-      .custom-cursor::after {
-        width: 2.5px;
-        height: 24px;
-      }
-      .cursor-dot {
-        width: 6px;
-        height: 6px;
-      }
       .track {
         font-size: 0.9rem;
         padding: 0.4rem 1.3rem;
@@ -541,9 +308,6 @@
   </style>
 </head>
 <body>
-  <div class="custom-cursor" id="customCursor"></div>
-  <div class="cursor-dot" id="cursorDot"></div>
-
   <div class="intro-overlay" id="introOverlay">
     <div class="intro-glitch-container">
       <div class="intro-title">CARTI</div>
@@ -558,8 +322,6 @@
   <div class="main-container" id="mainSite">
     <div class="grid-texture"></div>
     <div class="distortion-layer"></div>
-    <div class="noise-overlay"></div>
-    <div class="glitch-artifact"></div>
     
     <div class="content-center">
       <div class="brand-leak">CARTI</div>
@@ -584,11 +346,9 @@
     <div class="corner-right">OPM 555</div>
   </div>
 
-  <audio id="entranceSound" preload="auto" style="display: none;"></audio>
+  <audio id="entranceSound" preload="none" style="display: none;"></audio>
 
   <script>
-    const customCursor = document.getElementById('customCursor');
-    const cursorDot = document.getElementById('cursorDot');
     const intro = document.getElementById('introOverlay');
     const main = document.getElementById('mainSite');
     const enterBtn = document.getElementById('enterButton');
@@ -601,48 +361,11 @@
       'wake-up-filthy.mp3'
     ];
 
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      customCursor.style.left = mouseX + 'px';
-      customCursor.style.top = mouseY + 'px';
-      cursorDot.style.left = mouseX + 'px';
-      cursorDot.style.top = mouseY + 'px';
-    });
-
-    document.addEventListener('touchmove', (e) => {
-      if (e.touches.length > 0) {
-        mouseX = e.touches[0].clientX;
-        mouseY = e.touches[0].clientY;
-        customCursor.style.left = mouseX + 'px';
-        customCursor.style.top = mouseY + 'px';
-        cursorDot.style.left = mouseX + 'px';
-        cursorDot.style.top = mouseY + 'px';
-      }
-    }, { passive: true });
-
-    const hoverElements = document.querySelectorAll('.click-trigger, .open-button, .track, .void-stamp, .brand-leak, .sub-label, .leak-tracks, .hint-text, .footer-quote, .corner-signal, .corner-right');
-    
-    hoverElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        customCursor.classList.add('hovering');
-        cursorDot.classList.add('hovering');
-      });
-      el.addEventListener('mouseleave', () => {
-        customCursor.classList.remove('hovering');
-        cursorDot.classList.remove('hovering');
-      });
-    });
-
     main.classList.remove('active');
-    entranceSound.volume = 0.4;
+    entranceSound.volume = 0.5;
 
     function getRandomMP3() {
-      const randomIndex = Math.floor(Math.random() * entranceMP3s.length);
-      return entranceMP3s[randomIndex];
+      return entranceMP3s[Math.floor(Math.random() * entranceMP3s.length)];
     }
 
     function revealArchive() {
@@ -653,15 +376,15 @@
       source.type = 'audio/mpeg';
       entranceSound.appendChild(source);
       entranceSound.load();
-      entranceSound.currentTime = 0;
       
-      entranceSound.play().then(() => {
-        console.log('Playing: ' + randomFile);
-      }).catch(err => {
-        console.log('Audio play failed: ' + err.message);
-      });
+      entranceSound.oncanplaythrough = () => {
+        entranceSound.currentTime = 0;
+        entranceSound.play().catch(() => {});
+      };
+      
+      entranceSound.currentTime = 0;
+      entranceSound.play().catch(() => {});
 
-      document.body.style.transition = 'background 0.1s';
       document.body.style.background = '#2a0000';
       setTimeout(() => {
         document.body.style.background = '#000000';
@@ -671,11 +394,6 @@
 
       setTimeout(() => {
         main.classList.add('active');
-        main.style.transition = 'opacity 0.35s ease, filter 0.35s';
-        main.style.filter = 'blur(2px) contrast(1.3) saturate(1.2)';
-        setTimeout(() => {
-          main.style.filter = 'blur(0px) contrast(1) saturate(1)';
-        }, 200);
       }, 150);
 
       if (window.navigator && window.navigator.vibrate) {
@@ -705,7 +423,6 @@
     tracks.forEach(track => {
       track.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.body.style.transition = 'background 0.04s';
         document.body.style.background = '#2f0000';
         setTimeout(() => {
           document.body.style.background = '#000000';
@@ -715,16 +432,6 @@
         }
       });
     });
-
-    document.addEventListener('touchmove', function(e) {
-      if (!intro.classList.contains('hidden')) {
-        e.preventDefault();
-      }
-    }, { passive: false });
-
-    const style = document.createElement('style');
-    style.innerHTML = `* { cursor: none !important; }`;
-    document.head.appendChild(style);
   </script>
 </body>
 </html>
