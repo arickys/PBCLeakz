@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>PBCLEAKZ</title>
+  <title>PBCLEAKZ • VOID ARCHIVE</title>
   <style>
     * {
       margin: 0;
@@ -57,9 +57,9 @@
     }
 
     .intro-title {
-      font-size: clamp(7rem, 26vw, 16rem);
+      font-size: clamp(5rem, 20vw, 12rem);
       font-weight: 1000;
-      letter-spacing: -0.06em;
+      letter-spacing: -0.04em;
       color: #ffffff;
       text-transform: uppercase;
       font-family: 'Inter', 'Helvetica Neue', sans-serif;
@@ -70,7 +70,7 @@
     }
 
     .intro-title::after {
-      content: 'CARTI';
+      content: 'PBCLEAKZ';
       position: absolute;
       top: 0;
       left: 0;
@@ -111,6 +111,7 @@
       box-shadow: 0 0 50px rgba(220, 0, 0, 0.35);
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .click-trigger:hover .open-button {
@@ -186,10 +187,10 @@
     }
 
     .brand-leak {
-      font-size: clamp(6rem, 24vw, 14rem);
+      font-size: clamp(4rem, 18vw, 10rem);
       font-weight: 1000;
       text-transform: uppercase;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.04em;
       color: transparent;
       -webkit-text-stroke: 3px #e0e0e0;
       background: linear-gradient(180deg, #ffffff 0%, #800000 85%);
@@ -238,6 +239,7 @@
       background: rgba(15, 0, 0, 0.6);
       backdrop-filter: blur(8px);
       position: relative;
+      cursor: pointer;
     }
 
     .track:hover {
@@ -310,7 +312,7 @@
 <body>
   <div class="intro-overlay" id="introOverlay">
     <div class="intro-glitch-container">
-      <div class="intro-title">CARTI</div>
+      <div class="intro-title">PBCLEAKZ</div>
     </div>
     <div class="click-trigger" id="enterButton">
       <div class="open-button">CLICK TO OPEN</div>
@@ -324,7 +326,7 @@
     <div class="distortion-layer"></div>
     
     <div class="content-center">
-      <div class="brand-leak">CARTI</div>
+      <div class="brand-leak">PBCLEAKZ</div>
       <div class="sub-label">DEEP VOID • UNRELEASED</div>
       
       <div class="leak-tracks">
@@ -339,20 +341,17 @@
       </div>
       
       <div class="void-stamp">▮ RESTRICTED ARCHIVE ▮</div>
-      <div class="footer-quote">© PLAYBOI CARTI LEAKS • 2026</div>
+      <div class="footer-quote">© PBCLEAKZ • 2026</div>
     </div>
 
     <div class="corner-signal">SIGNAL: VOID</div>
     <div class="corner-right">OPM 555</div>
   </div>
 
-  <audio id="entranceSound" preload="none" style="display: none;"></audio>
-
   <script>
     const intro = document.getElementById('introOverlay');
     const main = document.getElementById('mainSite');
     const enterBtn = document.getElementById('enterButton');
-    const entranceSound = document.getElementById('entranceSound');
 
     const entranceMP3s = [
       'playboi-carti-what_lCCvSas.mp3',
@@ -361,29 +360,58 @@
       'wake-up-filthy.mp3'
     ];
 
+    let audioElement = null;
+
     main.classList.remove('active');
-    entranceSound.volume = 0.5;
 
     function getRandomMP3() {
       return entranceMP3s[Math.floor(Math.random() * entranceMP3s.length)];
     }
 
-    function revealArchive() {
+    function playEntranceSound() {
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.remove();
+      }
+
       const randomFile = getRandomMP3();
-      entranceSound.innerHTML = '';
-      const source = document.createElement('source');
-      source.src = randomFile;
-      source.type = 'audio/mpeg';
-      entranceSound.appendChild(source);
-      entranceSound.load();
       
-      entranceSound.oncanplaythrough = () => {
-        entranceSound.currentTime = 0;
-        entranceSound.play().catch(() => {});
-      };
+      audioElement = new Audio();
+      audioElement.src = randomFile;
+      audioElement.volume = 0.5;
+      audioElement.preload = 'auto';
       
-      entranceSound.currentTime = 0;
-      entranceSound.play().catch(() => {});
+      audioElement.addEventListener('canplaythrough', () => {
+        audioElement.currentTime = 0;
+        audioElement.play().then(() => {
+          console.log('Now playing: ' + randomFile);
+        }).catch(err => {
+          console.log('Playback failed, trying direct play...');
+          audioElement.muted = true;
+          audioElement.play().then(() => {
+            audioElement.muted = false;
+          }).catch(() => {});
+        });
+      });
+
+      audioElement.addEventListener('error', () => {
+        console.log('Error loading: ' + randomFile + ' - trying next file...');
+        const nextFile = entranceMP3s[Math.floor(Math.random() * entranceMP3s.length)];
+        audioElement.src = nextFile;
+        audioElement.load();
+      });
+
+      audioElement.load();
+
+      setTimeout(() => {
+        if (audioElement.readyState === 0) {
+          audioElement.play().catch(() => {});
+        }
+      }, 100);
+    }
+
+    function revealArchive() {
+      playEntranceSound();
 
       document.body.style.background = '#2a0000';
       setTimeout(() => {
@@ -432,6 +460,12 @@
         }
       });
     });
+
+    document.addEventListener('click', function initAudio() {
+      if (audioElement && audioElement.paused) {
+        audioElement.play().catch(() => {});
+      }
+    }, { once: true });
   </script>
 </body>
 </html>
