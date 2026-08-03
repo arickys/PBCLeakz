@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>PBCLEAKZ</title>
+  <title>CARTI LEAKS • VOID ARCHIVE</title>
   <style>
     * {
       margin: 0;
@@ -585,7 +585,7 @@
   </div>
 
   <audio id="entranceSound" preload="auto" style="display: none;">
-    <source src="https://cdn.freesound.org/previews/758/758353_16667651-lq.mp3" type="audio/mpeg">
+    <source src="PBCLeakz/ENTRANCE/glitch_entrance.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -636,7 +636,27 @@
 
     entranceSound.volume = 0.3;
 
+    function getRandomEntranceMP3() {
+      const mp3Files = [
+        'PBCLeakz/ENTRANCE/glitch_entrance.mp3',
+        'PBCLeakz/ENTRANCE/void_open.mp3',
+        'PBCLeakz/ENTRANCE/opium_gate.mp3',
+        'PBCLeakz/ENTRANCE/dark_reveal.mp3',
+        'PBCLeakz/ENTRANCE/signal_enter.mp3',
+        'PBCLeakz/ENTRANCE/cult_unlock.mp3',
+        'PBCLeakz/ENTRANCE/vamp_entrance.mp3',
+        'PBCLeakz/ENTRANCE/red_light.mp3',
+        'PBCLeakz/ENTRANCE/frequency_555.mp3',
+        'PBCLeakz/ENTRANCE/deep_void.mp3'
+      ];
+      const randomIndex = Math.floor(Math.random() * mp3Files.length);
+      return mp3Files[randomIndex];
+    }
+
     function revealArchive() {
+      const randomMP3 = getRandomEntranceMP3();
+      entranceSound.querySelector('source').src = randomMP3;
+      entranceSound.load();
       entranceSound.currentTime = 0;
       entranceSound.play().catch(() => {});
 
