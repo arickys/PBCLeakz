@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>PBCLEAKZ</title>
+  <title>PBCLEAKZ •</title>
   <style>
     * {
       margin: 0;
@@ -398,6 +398,12 @@
       box-shadow: 0 0 20px rgba(200,0,0,0.2);
     }
 
+    .track-item.playing {
+      background: rgba(30,0,0,0.6);
+      border-left: 3px solid #ff3333;
+      box-shadow: 0 0 30px rgba(255,0,0,0.3);
+    }
+
     .track-number {
       color: #440000;
       font-size: 0.9rem;
@@ -405,7 +411,8 @@
       width: 30px;
     }
 
-    .track-item:hover .track-number {
+    .track-item:hover .track-number,
+    .track-item.playing .track-number {
       color: #ff3333;
     }
 
@@ -417,7 +424,8 @@
       flex: 1;
     }
 
-    .track-item:hover .track-title {
+    .track-item:hover .track-title,
+    .track-item.playing .track-title {
       color: #ffffff;
     }
 
@@ -425,6 +433,17 @@
       color: #440000;
       font-size: 0.8rem;
       letter-spacing: 0.1em;
+      transition: all 0.2s;
+    }
+
+    .track-item.playing .track-duration {
+      color: #ff3333;
+      animation: playIndicator 1s infinite;
+    }
+
+    @keyframes playIndicator {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
     }
 
     .corner-signal {
@@ -534,45 +553,19 @@
       {
         name: 'NARCISSIST',
         folder: 'NARCISSIST',
-        cover: 'PBCLEAKZ/NARCISSIST/ALBUMICON.png',
+        cover: 'PBCLeakz/NARCISSIST/ALBUMICON.png',
         tracks: [
-          { name: 'Narcissist Intro', file: 'PBCLEAKZ/NARCISSIST/narcissist_intro.mp3' },
-          { name: 'Medusa', file: 'PBCLEAKZ/NARCISSIST/medusa.mp3' },
-          { name: 'Vamp Anthem', file: 'PBCLEAKZ/NARCISSIST/vamp_anthem.mp3' },
-          { name: 'Red Light', file: 'PBCLEAKZ/NARCISSIST/red_light.mp3' },
-          { name: 'Opium Dreams', file: 'PBCLEAKZ/NARCISSIST/opium_dreams.mp3' },
-          { name: 'Narcissist Outro', file: 'PBCLEAKZ/NARCISSIST/narcissist_outro.mp3' }
-        ]
-      },
-      {
-        name: 'WHOLE LOTTA RED',
-        folder: 'WLR',
-        cover: 'PBCLEAKZ/WLR/ALBUMICON.png',
-        tracks: [
-          { name: 'Rockstar Made', file: 'PBCLEAKZ/WLR/rockstar_made.mp3' },
-          { name: 'Go2DaMoon', file: 'PBCLEAKZ/WLR/go2damoon.mp3' },
-          { name: 'Stop Breathing', file: 'PBCLEAKZ/WLR/stop_breathing.mp3' },
-          { name: 'Beno!', file: 'PBCLEAKZ/WLR/beno.mp3' },
-          { name: 'JumpOutTheHouse', file: 'PBCLEAKZ/WLR/jumpoutthehouse.mp3' },
-          { name: 'M3tamorphosis', file: 'PBCLEAKZ/WLR/m3tamorphosis.mp3' },
-          { name: 'Slay3r', file: 'PBCLEAKZ/WLR/slay3r.mp3' },
-          { name: 'No Sl33p', file: 'PBCLEAKZ/WLR/no_sl33p.mp3' },
-          { name: 'New Tank', file: 'PBCLEAKZ/WLR/new_tank.mp3' },
-          { name: 'Teen X', file: 'PBCLEAKZ/WLR/teen_x.mp3' },
-          { name: 'Meh', file: 'PBCLEAKZ/WLR/meh.mp3' },
-          { name: 'Vamp Anthem', file: 'PBCLEAKZ/WLR/vamp_anthem.mp3' },
-          { name: 'New N3on', file: 'PBCLEAKZ/WLR/new_n3on.mp3' },
-          { name: 'Control', file: 'PBCLEAKZ/WLR/control.mp3' },
-          { name: 'Punk Monk', file: 'PBCLEAKZ/WLR/punk_monk.mp3' },
-          { name: 'On That Time', file: 'PBCLEAKZ/WLR/on_that_time.mp3' },
-          { name: 'King Vamp', file: 'PBCLEAKZ/WLR/king_vamp.mp3' },
-          { name: 'Place', file: 'PBCLEAKZ/WLR/place.mp3' },
-          { name: 'Sky', file: 'PBCLEAKZ/WLR/sky.mp3' },
-          { name: 'Over', file: 'PBCLEAKZ/WLR/over.mp3' },
-          { name: 'ILoveUIHateU', file: 'PBCLEAKZ/WLR/iloveuihateu.mp3' },
-          { name: 'Die4Guy', file: 'PBCLEAKZ/WLR/die4guy.mp3' },
-          { name: 'Not PLaying', file: 'PBCLEAKZ/WLR/not_playing.mp3' },
-          { name: 'F33l Lik3 Dyin', file: 'PBCLEAKZ/WLR/f33l_lik3_dyin.mp3' }
+          { name: '24 Songs', file: 'PBCLeakz/NARCISSIST/24 Songs.mp3' },
+          { name: 'Brand New', file: 'PBCLeakz/NARCISSIST/Brand New.mp3' },
+          { name: 'GO', file: 'PBCLeakz/NARCISSIST/GO.mp3' },
+          { name: 'HEARD YALL GETTIN MONEY', file: 'PBCLeakz/NARCISSIST/HEARD YALL GETTIN MONEY.mp3' },
+          { name: 'Hold Up (feat. future)', file: 'PBCLeakz/NARCISSIST/Hold Up (feat. future).mp3' },
+          { name: 'Killers', file: 'PBCLeakz/NARCISSIST/Killers.mp3' },
+          { name: 'R.I.P D. Hill', file: 'PBCLeakz/NARCISSIST/R.I.P D. Hill.mp3' },
+          { name: 'ROCKSTAR', file: 'PBCLeakz/NARCISSIST/ROCKSTAR.mp3' },
+          { name: 'Sights', file: 'PBCLeakz/NARCISSIST/Sights.mp3' },
+          { name: 'TWO OUT', file: 'PBCLeakz/NARCISSIST/TWO OUT.mp3' },
+          { name: 'Tryna Get Down', file: 'PBCLeakz/NARCISSIST/Tryna Get Down.mp3' }
         ]
       }
     ];
@@ -580,6 +573,8 @@
     let audioElement = null;
     let fadeInterval = null;
     let currentTrackAudio = null;
+    let currentPlayingIndex = -1;
+    let currentAlbum = null;
 
     main.classList.remove('active');
 
@@ -643,6 +638,13 @@
     }
 
     function openAlbum(album) {
+      currentAlbum = album;
+      currentPlayingIndex = -1;
+      if (currentTrackAudio) {
+        currentTrackAudio.pause();
+        currentTrackAudio = null;
+      }
+      
       albumsSection.classList.remove('visible-section');
       albumsSection.classList.add('hidden-section');
       tracklistSection.classList.remove('hidden-section');
@@ -660,10 +662,10 @@
         </div>
         <div class="track-items">
           ${album.tracks.map((track, index) => `
-            <div class="track-item" onclick="playTrack('${track.file.replace(/'/g, "\\'")}', '${track.name.replace(/'/g, "\\'")}')">
+            <div class="track-item" data-index="${index}" onclick="playTrack(${index}, event)">
               <span class="track-number">${String(index + 1).padStart(2, '0')}</span>
               <span class="track-title">${track.name}</span>
-              <span class="track-duration">▶</span>
+              <span class="track-duration" id="duration${index}">▶</span>
             </div>
           `).join('')}
         </div>
@@ -675,6 +677,8 @@
         currentTrackAudio.pause();
         currentTrackAudio = null;
       }
+      currentPlayingIndex = -1;
+      currentAlbum = null;
       tracklistSection.classList.remove('visible-section');
       tracklistSection.classList.add('hidden-section');
       albumsSection.classList.remove('hidden-section');
@@ -683,25 +687,49 @@
       topBarTitle.textContent = 'ARCHIVE';
     }
 
-    function playTrack(file, name) {
+    function playTrack(index, event) {
+      if (!currentAlbum) return;
+      
+      const track = currentAlbum.tracks[index];
+      
       if (currentTrackAudio) {
         currentTrackAudio.pause();
         currentTrackAudio = null;
       }
-      currentTrackAudio = new Audio();
-      currentTrackAudio.src = file;
-      currentTrackAudio.volume = 0.6;
-      currentTrackAudio.play().catch(() => {});
       
       document.querySelectorAll('.track-item').forEach(item => {
-        item.style.background = 'rgba(5,0,0,0.4)';
-        item.style.borderLeft = '3px solid transparent';
+        item.classList.remove('playing');
+        const durEl = item.querySelector('.track-duration');
+        if (durEl) durEl.textContent = '▶';
       });
       
       if (event && event.currentTarget) {
-        event.currentTarget.style.background = 'rgba(30,0,0,0.6)';
-        event.currentTarget.style.borderLeft = '3px solid #ff3333';
+        event.currentTarget.classList.add('playing');
+        const durEl = event.currentTarget.querySelector('.track-duration');
+        if (durEl) durEl.textContent = '▶▶▶';
       }
+      
+      currentPlayingIndex = index;
+      
+      currentTrackAudio = new Audio();
+      currentTrackAudio.src = track.file;
+      currentTrackAudio.volume = 0.6;
+      currentTrackAudio.play().catch(() => {});
+      
+      currentTrackAudio.onended = () => {
+        if (currentAlbum && currentPlayingIndex < currentAlbum.tracks.length - 1) {
+          const nextIndex = currentPlayingIndex + 1;
+          const nextItem = document.querySelector(`.track-item[data-index="${nextIndex}"]`);
+          playTrack(nextIndex, { currentTarget: nextItem });
+        } else {
+          document.querySelectorAll('.track-item').forEach(item => {
+            item.classList.remove('playing');
+            const durEl = item.querySelector('.track-duration');
+            if (durEl) durEl.textContent = '▶';
+          });
+          currentPlayingIndex = -1;
+        }
+      };
     }
 
     function revealArchive() {
