@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-<title>PBC — Archive</title>
+<title>PBCLeaks</title>
 <style>
   :root {
     --bg: #121212;
@@ -14,9 +14,9 @@
     --text: #ffffff;
     --text-sub: #b3b3b3;
     --text-muted: #6a6a6a;
-    --green: #1DB954;
-    --green-hover: #1ed760;
-    --green-press: #1aa34a;
+    --accent: #E0263D;
+    --accent-hover: #ff3b52;
+    --accent-press: #b81f32;
     --border: #282828;
     --player-h: 90px;
     --sidebar-w: 240px;
@@ -43,11 +43,11 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  ::selection { background: var(--green); color: #000; }
+  ::selection { background: var(--accent); color: #fff; }
 
   button { font-family: inherit; }
   button:focus-visible, [tabindex]:focus-visible {
-    outline: 2px solid var(--green);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 
@@ -56,7 +56,7 @@
   /* ========== INTRO ========== */
   .intro-overlay {
     position: fixed; inset: 0; z-index: 999;
-    background: #000;
+    background: radial-gradient(ellipse at center, #1a0709 0%, #000 70%);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     transition: opacity .6s ease, visibility .6s;
   }
@@ -65,7 +65,8 @@
   .intro-logo {
     width: 72px; height: 72px;
     margin-bottom: 2rem;
-    color: var(--green);
+    color: var(--accent);
+    filter: drop-shadow(0 0 24px rgba(224, 38, 61, .45));
   }
 
   .intro-title {
@@ -85,8 +86,8 @@
 
   .intro-enter {
     margin-top: 2.5rem;
-    background: var(--green);
-    color: #000;
+    background: var(--accent);
+    color: #fff;
     border: none;
     font-size: .9rem;
     font-weight: 700;
@@ -98,11 +99,11 @@
     transition: transform .15s, background .15s, box-shadow .15s;
   }
   .intro-enter:hover {
-    background: var(--green-hover);
+    background: var(--accent-hover);
     transform: scale(1.04);
-    box-shadow: 0 8px 24px rgba(29, 185, 84, .35);
+    box-shadow: 0 8px 28px rgba(224, 38, 61, .45);
   }
-  .intro-enter:active { transform: scale(.98); background: var(--green-press); }
+  .intro-enter:active { transform: scale(.98); background: var(--accent-press); }
 
   .intro-hint {
     margin-top: 1rem;
@@ -149,7 +150,7 @@
     color: var(--text);
     text-decoration: none;
   }
-  .sidebar-logo svg { width: 32px; height: 32px; color: var(--green); flex-shrink: 0; }
+  .sidebar-logo svg { width: 32px; height: 32px; color: var(--accent); flex-shrink: 0; }
   .sidebar-logo span {
     font-size: 1.35rem;
     font-weight: 900;
@@ -215,7 +216,7 @@
 
   /* Main content */
   .main {
-    background: linear-gradient(180deg, #1e1e1e 0%, var(--bg) 280px);
+    background: linear-gradient(180deg, #241012 0%, var(--bg) 280px);
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
@@ -269,7 +270,9 @@
     padding: .55rem 1rem;
     width: 100%;
     max-width: 360px;
+    transition: box-shadow .15s;
   }
+  .search-box:focus-within { box-shadow: 0 0 0 2px var(--accent); }
   .search-box svg { width: 18px; height: 18px; color: #000; flex-shrink: 0; }
   .search-box input {
     flex: 1;
@@ -310,7 +313,7 @@
     font-weight: 500;
   }
 
-  /* Album cards — Spotify style */
+  /* Album cards */
   .albums-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -322,10 +325,10 @@
     border-radius: var(--radius);
     padding: 1rem;
     cursor: pointer;
-    transition: background .2s;
+    transition: background .2s, transform .15s;
     position: relative;
   }
-  .album-card:hover { background: var(--bg-highlight); }
+  .album-card:hover { background: var(--bg-highlight); transform: translateY(-2px); }
 
   .album-cover-wrap {
     position: relative;
@@ -349,11 +352,11 @@
     bottom: 10px;
     width: 48px; height: 48px;
     border-radius: 50%;
-    background: var(--green);
+    background: var(--accent);
     border: none;
-    color: #000;
+    color: #fff;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 16px rgba(0,0,0,.4);
+    box-shadow: 0 8px 20px rgba(224, 38, 61, .4);
     opacity: 0;
     transform: translateY(8px);
     transition: opacity .2s, transform .2s, background .15s;
@@ -363,7 +366,7 @@
     opacity: 1;
     transform: translateY(0);
   }
-  .play-fab:hover { background: var(--green-hover); transform: scale(1.06) translateY(0); }
+  .play-fab:hover { background: var(--accent-hover); transform: scale(1.06) translateY(0); }
   .play-fab svg { width: 22px; height: 22px; margin-left: 2px; }
 
   .album-name {
@@ -405,6 +408,7 @@
     text-transform: uppercase;
     letter-spacing: .04em;
     margin-bottom: .4rem;
+    color: var(--accent);
   }
   .tracklist-info h1 {
     font-size: clamp(1.8rem, 4vw, 3.5rem);
@@ -429,15 +433,15 @@
   .play-all-btn {
     width: 56px; height: 56px;
     border-radius: 50%;
-    background: var(--green);
+    background: var(--accent);
     border: none;
-    color: #000;
+    color: #fff;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     transition: transform .15s, background .15s;
-    box-shadow: 0 8px 16px rgba(0,0,0,.3);
+    box-shadow: 0 8px 20px rgba(224, 38, 61, .35);
   }
-  .play-all-btn:hover { background: var(--green-hover); transform: scale(1.06); }
+  .play-all-btn:hover { background: var(--accent-hover); transform: scale(1.06); }
   .play-all-btn svg { width: 26px; height: 26px; margin-left: 2px; }
 
   .track-table {
@@ -462,7 +466,7 @@
     transition: background .1s;
   }
   .track-row:hover td { background: rgba(255,255,255,.08); }
-  .track-row.playing td { background: rgba(255,255,255,.1); }
+  .track-row.playing td { background: rgba(224, 38, 61, .12); }
   .track-row.errored { opacity: .4; cursor: not-allowed; }
 
   .track-row td {
@@ -477,12 +481,12 @@
     font-size: .85rem;
     width: 40px;
   }
-  .track-row.playing td:first-child { color: var(--green); }
+  .track-row.playing td:first-child { color: var(--accent); }
   .track-row .track-title {
     font-weight: 500;
     color: var(--text);
   }
-  .track-row.playing .track-title { color: var(--green); }
+  .track-row.playing .track-title { color: var(--accent); }
   .track-row .track-status {
     text-align: right;
     color: var(--text-sub);
@@ -497,7 +501,7 @@
   }
   .eq span {
     width: 2px;
-    background: var(--green);
+    background: var(--accent);
     animation: eqBounce .7s ease-in-out infinite;
     border-radius: 1px;
   }
@@ -582,7 +586,7 @@
   .ctrl:hover { color: var(--text); }
   .ctrl:active { transform: scale(.9); }
   .ctrl svg { width: 16px; height: 16px; }
-  .ctrl.active { color: var(--green); }
+  .ctrl.active { color: var(--accent); }
   .ctrl.active::after {
     content: '';
     position: absolute;
@@ -591,14 +595,14 @@
     transform: translateX(-50%);
     width: 4px; height: 4px;
     border-radius: 50%;
-    background: var(--green);
+    background: var(--accent);
   }
   .ctrl .badge-1 {
     position: absolute;
     top: 2px; right: 2px;
     font-size: .55rem;
     font-weight: 800;
-    color: var(--green);
+    color: var(--accent);
   }
 
   .ctrl-play {
@@ -656,7 +660,7 @@
     pointer-events: none;
   }
   .slider:hover .slider-fill,
-  .slider.dragging .slider-fill { background: var(--green); }
+  .slider.dragging .slider-fill { background: var(--accent); }
 
   .slider-thumb {
     position: absolute;
@@ -702,7 +706,7 @@
   .vol-wrap .slider { flex: 1; }
   .vol-wrap .slider-fill { background: var(--text); }
   .vol-wrap .slider:hover .slider-fill,
-  .vol-wrap .slider.dragging .slider-fill { background: var(--green); }
+  .vol-wrap .slider.dragging .slider-fill { background: var(--accent); }
 
   /* Toast */
   .toast-stack {
@@ -718,8 +722,8 @@
     align-items: center;
   }
   .toast {
-    background: var(--green);
-    color: #000;
+    background: var(--accent);
+    color: #fff;
     font-size: .85rem;
     font-weight: 600;
     padding: .65rem 1.25rem;
@@ -789,9 +793,7 @@
       <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
     </svg>
     <h1 class="intro-title">PBC Archive</h1>
-    <p class="intro-sub">Playboi Carti · Unofficial</p>
     <button class="intro-enter" id="enterButton">Enter</button>
-    <p class="intro-hint">Narcissist · WLR · Lost Files</p>
     <div class="audio-note" id="audioNote">Tap to enable audio</div>
   </div>
 
