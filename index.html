@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>PBCLEAKZ • VOID ARCHIVE</title>
+  <title>PBCLEAKZ</title>
   <style>
     * {
       margin: 0;
@@ -19,8 +19,9 @@
       overflow: hidden;
       user-select: none;
       -webkit-tap-highlight-color: rgba(180, 0, 0, 0.2);
-      background-image: radial-gradient(rgba(25, 0, 0, 0.5) 1px, transparent 1px);
+      background-image: radial-gradient(rgba(25, 0, 0, 0.4) 1px, transparent 1px);
       background-size: 30px 30px;
+      color: #ffffff;
     }
 
     .intro-overlay {
@@ -57,7 +58,7 @@
     }
 
     .intro-title {
-      font-size: clamp(5rem, 20vw, 12rem);
+      font-size: clamp(4rem, 18vw, 10rem);
       font-weight: 1000;
       letter-spacing: -0.04em;
       color: #ffffff;
@@ -174,15 +175,15 @@
       background: #000000;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1);
       z-index: 800;
       background-image: 
-        radial-gradient(circle at 25% 35%, rgba(80,0,0,0.35) 0%, transparent 50%),
-        radial-gradient(circle at 75% 65%, rgba(60,0,0,0.3) 0%, transparent 50%);
+        radial-gradient(circle at 25% 35%, rgba(80,0,0,0.25) 0%, transparent 50%),
+        radial-gradient(circle at 75% 65%, rgba(60,0,0,0.2) 0%, transparent 50%);
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     .main-container.active {
@@ -190,193 +191,287 @@
       pointer-events: auto;
     }
 
+    .main-container::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .main-container::-webkit-scrollbar-track {
+      background: #000000;
+    }
+
+    .main-container::-webkit-scrollbar-thumb {
+      background: #330000;
+      border-radius: 2px;
+    }
+
     .distortion-layer {
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100%;
-      background: repeating-linear-gradient(0deg, rgba(255,0,0,0.04) 0px, transparent 2px, rgba(0,0,0,0.9) 4px);
+      background: repeating-linear-gradient(0deg, rgba(255,0,0,0.03) 0px, transparent 2px, rgba(0,0,0,0.9) 4px);
       pointer-events: none;
       z-index: 30;
     }
 
     .grid-texture {
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(80,0,0,0.2) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(80,0,0,0.15) 1px, transparent 1px);
+        linear-gradient(rgba(60,0,0,0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(60,0,0,0.1) 1px, transparent 1px);
       background-size: 50px 50px;
-      mask-image: radial-gradient(circle at 50% 45%, black 20%, transparent 80%);
       pointer-events: none;
+      z-index: 20;
     }
 
-    .content-center {
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(20px);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1a0000;
+    }
+
+    .top-bar-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-shadow: 0 0 30px rgba(200,0,0,0.6);
+    }
+
+    .back-button {
+      background: none;
+      border: 1px solid #440000;
+      color: #888888;
+      padding: 0.5rem 1.5rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+      display: none;
+    }
+
+    .back-button:hover {
+      border-color: #ff3333;
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(255,0,0,0.4);
+    }
+
+    .back-button.visible {
+      display: block;
+    }
+
+    .content-area {
       position: relative;
       z-index: 60;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.8rem;
-      animation: contentFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 2rem;
+      flex: 1;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.5em;
+      color: #660000;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #1a0000;
+    }
+
+    .albums-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      animation: contentFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @keyframes contentFadeIn {
-      from { opacity: 0; transform: translateY(30px); }
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .brand-leak {
-      font-size: clamp(4rem, 18vw, 10rem);
-      font-weight: 1000;
-      text-transform: uppercase;
-      letter-spacing: -0.04em;
-      color: transparent;
-      -webkit-text-stroke: 3px #e0e0e0;
-      background: linear-gradient(180deg, #ffffff 0%, #800000 85%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 60px #cc0000);
-      font-family: 'Inter', 'Helvetica Neue', sans-serif;
-      transform: skew(-4deg);
-      line-height: 0.85;
-      margin-bottom: 0.3rem;
-      animation: brandGlow 2s ease-in-out infinite;
+    .album-card {
+      background: rgba(10,0,0,0.6);
+      border: 1px solid #1a0000;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
     }
 
-    @keyframes brandGlow {
-      0%, 100% { filter: drop-shadow(0 0 60px #cc0000); }
-      50% { filter: drop-shadow(0 0 100px #ff0000); }
+    .album-card:hover {
+      border-color: #ff3333;
+      background: rgba(20,0,0,0.8);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(200,0,0,0.3);
     }
 
-    .sub-label {
-      font-size: 1.1rem;
+    .album-cover {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: 2px solid #330000;
+      background: #0a0000;
+    }
+
+    .album-name {
+      font-size: 0.9rem;
       font-weight: 700;
-      letter-spacing: 0.8em;
-      color: #bbbbbb;
+      letter-spacing: 0.2em;
+      color: #cccccc;
       text-transform: uppercase;
-      border-bottom: 2px solid #660000;
-      padding-bottom: 0.8rem;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(15px);
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
     }
 
-    .leak-tracks {
+    .album-card:hover .album-name {
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255,0,0,0.6);
+    }
+
+    .tracklist-view {
+      animation: contentFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tracklist-header {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      justify-content: center;
-      gap: 2.2rem;
-      margin: 2.2rem 0 2.8rem;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #1a0000;
     }
 
-    .track {
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      color: #c0c0c0;
+    .tracklist-cover {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #440000;
+      box-shadow: 0 0 40px rgba(200,0,0,0.3);
+    }
+
+    .tracklist-info h2 {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      padding: 0.5rem 1.8rem;
-      border-left: 3px solid #770000;
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      background: rgba(15, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
-      position: relative;
+      margin-bottom: 0.5rem;
+    }
+
+    .tracklist-info p {
+      color: #660000;
+      font-size: 0.8rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+    }
+
+    .track-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .track-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1rem 1.5rem;
+      background: rgba(5,0,0,0.4);
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
       cursor: pointer;
     }
 
-    .track::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, rgba(255,0,0,0.1), transparent);
-      transition: width 0.3s;
-      z-index: -1;
+    .track-item:hover {
+      background: rgba(20,0,0,0.6);
+      border-left: 3px solid #ff3333;
+      box-shadow: 0 0 20px rgba(200,0,0,0.2);
     }
 
-    .track:hover::before {
-      width: 100%;
+    .track-number {
+      color: #440000;
+      font-size: 0.9rem;
+      font-weight: 700;
+      width: 30px;
     }
 
-    .track:hover {
-      color: #ffffff;
-      border-left: 4px solid #ff1a1a;
-      text-shadow: 0 0 25px #ff0000;
-      letter-spacing: 0.4em;
-      background: rgba(35, 0, 0, 0.85);
-      transform: translateX(8px) scale(1.05);
-      box-shadow: 0 0 40px rgba(255,0,0,0.5);
+    .track-item:hover .track-number {
+      color: #ff3333;
     }
 
-    .void-stamp {
-      margin-top: 0.8rem;
-      font-size: 0.85rem;
-      color: #660000;
-      border: 2px solid #3a0000;
-      padding: 0.6rem 2.5rem;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(15px);
-      letter-spacing: 0.6em;
-      transform: rotate(-1deg);
+    .track-title {
+      color: #cccccc;
+      font-size: 0.95rem;
       font-weight: 600;
-      transition: all 0.3s;
+      letter-spacing: 0.1em;
+      flex: 1;
     }
 
-    .void-stamp:hover {
-      color: #990000;
-      border-color: #660000;
-      box-shadow: 0 0 30px rgba(200,0,0,0.3);
+    .track-item:hover .track-title {
+      color: #ffffff;
     }
 
-    .footer-quote {
-      color: #330000;
-      margin-top: 2.2rem;
-      font-size: 0.75rem;
-      letter-spacing: 0.4em;
-      font-style: italic;
+    .track-duration {
+      color: #440000;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
     }
 
     .corner-signal {
-      position: absolute;
+      position: fixed;
       bottom: 20px;
       left: 25px;
-      color: #3a0000;
-      font-size: 0.75rem;
-      letter-spacing: 0.35em;
+      color: #2a0000;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
       z-index: 70;
-      transition: all 0.3s;
+      pointer-events: none;
     }
     
     .corner-right {
-      position: absolute;
+      position: fixed;
       top: 22px;
       right: 28px;
-      color: #440000;
-      font-size: 0.75rem;
-      letter-spacing: 0.4em;
+      color: #330000;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
       z-index: 70;
-      transition: all 0.3s;
+      pointer-events: none;
     }
 
-    @media (max-width: 650px) {
-      .leak-tracks {
-        gap: 1.2rem;
+    .hidden-section {
+      display: none;
+    }
+
+    .visible-section {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .albums-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
       }
-      .open-button {
-        font-size: 1.2rem;
-        padding: 0.9rem 2.2rem;
-        letter-spacing: 0.4em;
+      .tracklist-header {
+        flex-direction: column;
+        text-align: center;
       }
-      .track {
-        font-size: 0.9rem;
-        padding: 0.4rem 1.3rem;
+      .tracklist-cover {
+        width: 150px;
+        height: 150px;
+      }
+      .top-bar-title {
+        font-size: 1.3rem;
       }
     }
   </style>
@@ -397,23 +492,20 @@
     <div class="grid-texture"></div>
     <div class="distortion-layer"></div>
     
-    <div class="content-center">
-      <div class="brand-leak">PBCLEAKZ</div>
-      <div class="sub-label">DEEP VOID • UNRELEASED</div>
-      
-      <div class="leak-tracks">
-        <span class="track">KETAMINE</span>
-        <span class="track">HOMICIDE</span>
-        <span class="track">POP OUT</span>
-        <span class="track">UKGI</span>
-        <span class="track">FOMDJ</span>
-        <span class="track">KILLERS</span>
-        <span class="track">MOON</span>
-        <span class="track">EVIL</span>
+    <div class="top-bar">
+      <span class="top-bar-title" id="topBarTitle">ARCHIVE</span>
+      <button class="back-button" id="backButton" onclick="goBackToAlbums()">← BACK</button>
+    </div>
+
+    <div class="content-area">
+      <div id="albumsSection" class="visible-section">
+        <div class="section-title">▮ ALBUMS & PROJECTS</div>
+        <div class="albums-grid" id="albumsGrid"></div>
       </div>
       
-      <div class="void-stamp">▮ RESTRICTED ARCHIVE ▮</div>
-      <div class="footer-quote">© PBCLEAKZ • 2026</div>
+      <div id="tracklistSection" class="hidden-section">
+        <div class="tracklist-view" id="tracklistContent"></div>
+      </div>
     </div>
 
     <div class="corner-signal">SIGNAL: VOID</div>
@@ -424,6 +516,12 @@
     const intro = document.getElementById('introOverlay');
     const main = document.getElementById('mainSite');
     const enterBtn = document.getElementById('enterButton');
+    const albumsGrid = document.getElementById('albumsGrid');
+    const tracklistContent = document.getElementById('tracklistContent');
+    const albumsSection = document.getElementById('albumsSection');
+    const tracklistSection = document.getElementById('tracklistSection');
+    const backButton = document.getElementById('backButton');
+    const topBarTitle = document.getElementById('topBarTitle');
 
     const entranceMP3s = [
       'ENTRANCE/playboi-carti-what_lCCvSas.mp3',
@@ -432,10 +530,56 @@
       'ENTRANCE/wake-up-filthy.mp3'
     ];
 
+    const albums = [
+      {
+        name: 'NARCISSIST',
+        folder: 'NARCISSIST',
+        cover: 'PBCLEAKZ/NARCISSIST/ALBUMICON.png',
+        tracks: [
+          { name: 'Narcissist Intro', file: 'PBCLEAKZ/NARCISSIST/narcissist_intro.mp3' },
+          { name: 'Medusa', file: 'PBCLEAKZ/NARCISSIST/medusa.mp3' },
+          { name: 'Vamp Anthem', file: 'PBCLEAKZ/NARCISSIST/vamp_anthem.mp3' },
+          { name: 'Red Light', file: 'PBCLEAKZ/NARCISSIST/red_light.mp3' },
+          { name: 'Opium Dreams', file: 'PBCLEAKZ/NARCISSIST/opium_dreams.mp3' },
+          { name: 'Narcissist Outro', file: 'PBCLEAKZ/NARCISSIST/narcissist_outro.mp3' }
+        ]
+      },
+      {
+        name: 'WHOLE LOTTA RED',
+        folder: 'WLR',
+        cover: 'PBCLEAKZ/WLR/ALBUMICON.png',
+        tracks: [
+          { name: 'Rockstar Made', file: 'PBCLEAKZ/WLR/rockstar_made.mp3' },
+          { name: 'Go2DaMoon', file: 'PBCLEAKZ/WLR/go2damoon.mp3' },
+          { name: 'Stop Breathing', file: 'PBCLEAKZ/WLR/stop_breathing.mp3' },
+          { name: 'Beno!', file: 'PBCLEAKZ/WLR/beno.mp3' },
+          { name: 'JumpOutTheHouse', file: 'PBCLEAKZ/WLR/jumpoutthehouse.mp3' },
+          { name: 'M3tamorphosis', file: 'PBCLEAKZ/WLR/m3tamorphosis.mp3' },
+          { name: 'Slay3r', file: 'PBCLEAKZ/WLR/slay3r.mp3' },
+          { name: 'No Sl33p', file: 'PBCLEAKZ/WLR/no_sl33p.mp3' },
+          { name: 'New Tank', file: 'PBCLEAKZ/WLR/new_tank.mp3' },
+          { name: 'Teen X', file: 'PBCLEAKZ/WLR/teen_x.mp3' },
+          { name: 'Meh', file: 'PBCLEAKZ/WLR/meh.mp3' },
+          { name: 'Vamp Anthem', file: 'PBCLEAKZ/WLR/vamp_anthem.mp3' },
+          { name: 'New N3on', file: 'PBCLEAKZ/WLR/new_n3on.mp3' },
+          { name: 'Control', file: 'PBCLEAKZ/WLR/control.mp3' },
+          { name: 'Punk Monk', file: 'PBCLEAKZ/WLR/punk_monk.mp3' },
+          { name: 'On That Time', file: 'PBCLEAKZ/WLR/on_that_time.mp3' },
+          { name: 'King Vamp', file: 'PBCLEAKZ/WLR/king_vamp.mp3' },
+          { name: 'Place', file: 'PBCLEAKZ/WLR/place.mp3' },
+          { name: 'Sky', file: 'PBCLEAKZ/WLR/sky.mp3' },
+          { name: 'Over', file: 'PBCLEAKZ/WLR/over.mp3' },
+          { name: 'ILoveUIHateU', file: 'PBCLEAKZ/WLR/iloveuihateu.mp3' },
+          { name: 'Die4Guy', file: 'PBCLEAKZ/WLR/die4guy.mp3' },
+          { name: 'Not PLaying', file: 'PBCLEAKZ/WLR/not_playing.mp3' },
+          { name: 'F33l Lik3 Dyin', file: 'PBCLEAKZ/WLR/f33l_lik3_dyin.mp3' }
+        ]
+      }
+    ];
+
     let audioElement = null;
     let fadeInterval = null;
-    let attemptCount = 0;
-    const maxAttempts = 2;
+    let currentTrackAudio = null;
 
     main.classList.remove('active');
 
@@ -445,18 +589,13 @@
 
     function smoothFadeOut(duration = 2000) {
       if (!audioElement || audioElement.paused) return;
-      
       if (fadeInterval) clearInterval(fadeInterval);
-      
       const startVolume = audioElement.volume;
       const startTime = Date.now();
-      
       fadeInterval = setInterval(() => {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
         audioElement.volume = startVolume * (1 - progress);
-        
         if (progress >= 1) {
           clearInterval(fadeInterval);
           fadeInterval = null;
@@ -474,58 +613,108 @@
         audioElement.remove();
         audioElement = null;
       }
-
-      attemptCount = 0;
-      tryPlayAudio();
-    }
-
-    function tryPlayAudio() {
-      if (attemptCount >= maxAttempts) return;
-
       const randomFile = getRandomMP3();
-      attemptCount++;
-      
       audioElement = new Audio();
       audioElement.src = randomFile;
       audioElement.volume = 0.5;
       audioElement.preload = 'auto';
-
       audioElement.onloadeddata = () => {
         audioElement.currentTime = 0;
         audioElement.play().then(() => {
           setTimeout(() => smoothFadeOut(3000), 2000);
         }).catch(() => {});
       };
-
-      audioElement.onerror = () => {
-        if (attemptCount < maxAttempts) {
-          setTimeout(() => tryPlayAudio(), 500);
-        }
-      };
-
+      audioElement.onerror = () => {};
       audioElement.load();
+    }
+
+    function renderAlbums() {
+      albumsGrid.innerHTML = '';
+      albums.forEach(album => {
+        const card = document.createElement('div');
+        card.className = 'album-card';
+        card.onclick = () => openAlbum(album);
+        card.innerHTML = `
+          <img class="album-cover" src="${album.cover}" alt="${album.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%230a0000%22 width=%22200%22 height=%22200%22/><text fill=%22%23440000%22 font-size=%2220%22 text-anchor=%22middle%22 x=%22100%22 y=%22110%22>${album.name}</text></svg>'">
+          <div class="album-name">${album.name}</div>
+        `;
+        albumsGrid.appendChild(card);
+      });
+    }
+
+    function openAlbum(album) {
+      albumsSection.classList.remove('visible-section');
+      albumsSection.classList.add('hidden-section');
+      tracklistSection.classList.remove('hidden-section');
+      tracklistSection.classList.add('visible-section');
+      backButton.classList.add('visible');
+      topBarTitle.textContent = album.name;
+
+      tracklistContent.innerHTML = `
+        <div class="tracklist-header">
+          <img class="tracklist-cover" src="${album.cover}" alt="${album.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect fill=%22%230a0000%22 width=%22200%22 height=%22200%22/><text fill=%22%23440000%22 font-size=%2220%22 text-anchor=%22middle%22 x=%22100%22 y=%22110%22>${album.name}</text></svg>'">
+          <div class="tracklist-info">
+            <h2>${album.name}</h2>
+            <p>${album.tracks.length} TRACKS</p>
+          </div>
+        </div>
+        <div class="track-items">
+          ${album.tracks.map((track, index) => `
+            <div class="track-item" onclick="playTrack('${track.file.replace(/'/g, "\\'")}', '${track.name.replace(/'/g, "\\'")}')">
+              <span class="track-number">${String(index + 1).padStart(2, '0')}</span>
+              <span class="track-title">${track.name}</span>
+              <span class="track-duration">▶</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function goBackToAlbums() {
+      if (currentTrackAudio) {
+        currentTrackAudio.pause();
+        currentTrackAudio = null;
+      }
+      tracklistSection.classList.remove('visible-section');
+      tracklistSection.classList.add('hidden-section');
+      albumsSection.classList.remove('hidden-section');
+      albumsSection.classList.add('visible-section');
+      backButton.classList.remove('visible');
+      topBarTitle.textContent = 'ARCHIVE';
+    }
+
+    function playTrack(file, name) {
+      if (currentTrackAudio) {
+        currentTrackAudio.pause();
+        currentTrackAudio = null;
+      }
+      currentTrackAudio = new Audio();
+      currentTrackAudio.src = file;
+      currentTrackAudio.volume = 0.6;
+      currentTrackAudio.play().catch(() => {});
+      
+      document.querySelectorAll('.track-item').forEach(item => {
+        item.style.background = 'rgba(5,0,0,0.4)';
+        item.style.borderLeft = '3px solid transparent';
+      });
+      
+      if (event && event.currentTarget) {
+        event.currentTarget.style.background = 'rgba(30,0,0,0.6)';
+        event.currentTarget.style.borderLeft = '3px solid #ff3333';
+      }
     }
 
     function revealArchive() {
       playEntranceSound();
-
       document.body.style.transition = 'background 0.2s';
       document.body.style.background = '#2a0000';
       setTimeout(() => {
         document.body.style.background = '#000000';
       }, 150);
-
       intro.classList.add('hidden');
-
       setTimeout(() => {
         main.classList.add('active');
-        main.style.transition = 'opacity 0.5s ease, filter 0.5s';
-        main.style.filter = 'blur(1px) contrast(1.1)';
-        setTimeout(() => {
-          main.style.filter = 'blur(0px) contrast(1)';
-        }, 300);
       }, 200);
-
       if (window.navigator && window.navigator.vibrate) {
         window.navigator.vibrate([20, 50, 20]);
       }
@@ -549,20 +738,7 @@
       }
     });
 
-    const tracks = document.querySelectorAll('.track');
-    tracks.forEach(track => {
-      track.addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.body.style.transition = 'background 0.1s';
-        document.body.style.background = '#2f0000';
-        setTimeout(() => {
-          document.body.style.background = '#000000';
-        }, 80);
-        if (window.navigator && window.navigator.vibrate) {
-          window.navigator.vibrate(15);
-        }
-      });
-    });
+    renderAlbums();
   </script>
 </body>
 </html>
