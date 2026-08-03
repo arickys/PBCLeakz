@@ -584,9 +584,7 @@
     <div class="corner-right">OPM 555</div>
   </div>
 
-  <audio id="entranceSound" preload="auto" style="display: none;">
-    <source src="PBCLeakz/ENTRANCE/glitch_entrance.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="entranceSound" preload="auto" style="display: none;"></audio>
 
   <script>
     const customCursor = document.getElementById('customCursor');
@@ -595,6 +593,13 @@
     const main = document.getElementById('mainSite');
     const enterBtn = document.getElementById('enterButton');
     const entranceSound = document.getElementById('entranceSound');
+
+    const entranceMP3s = [
+      'playboi-carti-what_lCCvSas.mp3',
+      'seyuh-carti.mp3',
+      'waeh-carti.mp3',
+      'wake-up-filthy.mp3'
+    ];
 
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
@@ -633,32 +638,28 @@
     });
 
     main.classList.remove('active');
+    entranceSound.volume = 0.4;
 
-    entranceSound.volume = 0.3;
-
-    function getRandomEntranceMP3() {
-      const mp3Files = [
-        'PBCLeakz/ENTRANCE/glitch_entrance.mp3',
-        'PBCLeakz/ENTRANCE/void_open.mp3',
-        'PBCLeakz/ENTRANCE/opium_gate.mp3',
-        'PBCLeakz/ENTRANCE/dark_reveal.mp3',
-        'PBCLeakz/ENTRANCE/signal_enter.mp3',
-        'PBCLeakz/ENTRANCE/cult_unlock.mp3',
-        'PBCLeakz/ENTRANCE/vamp_entrance.mp3',
-        'PBCLeakz/ENTRANCE/red_light.mp3',
-        'PBCLeakz/ENTRANCE/frequency_555.mp3',
-        'PBCLeakz/ENTRANCE/deep_void.mp3'
-      ];
-      const randomIndex = Math.floor(Math.random() * mp3Files.length);
-      return mp3Files[randomIndex];
+    function getRandomMP3() {
+      const randomIndex = Math.floor(Math.random() * entranceMP3s.length);
+      return entranceMP3s[randomIndex];
     }
 
     function revealArchive() {
-      const randomMP3 = getRandomEntranceMP3();
-      entranceSound.querySelector('source').src = randomMP3;
+      const randomFile = getRandomMP3();
+      entranceSound.innerHTML = '';
+      const source = document.createElement('source');
+      source.src = randomFile;
+      source.type = 'audio/mpeg';
+      entranceSound.appendChild(source);
       entranceSound.load();
       entranceSound.currentTime = 0;
-      entranceSound.play().catch(() => {});
+      
+      entranceSound.play().then(() => {
+        console.log('Playing: ' + randomFile);
+      }).catch(err => {
+        console.log('Audio play failed: ' + err.message);
+      });
 
       document.body.style.transition = 'background 0.1s';
       document.body.style.background = '#2a0000';
