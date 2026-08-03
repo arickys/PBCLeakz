@@ -30,7 +30,7 @@
     --ease-smooth: cubic-bezier(.16,1,.3,1);
     --ease-out: cubic-bezier(.23,1,.32,1);
 
-    --player-h: 128px;
+    --player-h: 148px;
   }
 
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -66,7 +66,7 @@
 
   img{ -webkit-user-drag:none; user-select:none; }
 
-  /* INTRO - Brutalist minimal */
+  /* INTRO */
   .intro-overlay{
     position:fixed; inset:0; z-index:999;
     background:var(--void);
@@ -212,7 +212,6 @@
   .main-container::-webkit-scrollbar-thumb{ background:var(--line-bright); border-radius:1px; }
   .main-container::-webkit-scrollbar-thumb:hover{ background:var(--blood); }
 
-  /* Texture overlay */
   .grain{
     position:fixed; inset:0; z-index:5; pointer-events:none;
     opacity:.25;
@@ -224,7 +223,7 @@
     background:radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.6) 100%);
   }
 
-  /* TOP BAR - Refined */
+  /* TOP BAR */
   .top-bar{
     position:sticky; top:0; z-index:100;
     background:rgba(3,1,2,.94);
@@ -296,7 +295,7 @@
     font-weight:400;
   }
 
-  /* ALBUM GRID - Editorial style */
+  /* ALBUM GRID */
   .albums-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
@@ -368,7 +367,7 @@
     margin-top:.25rem; text-transform:uppercase;
   }
 
-  /* TRACKLIST - Spread layout */
+  /* TRACKLIST */
   .tracklist-view{ animation:fadeIn .35s var(--ease-smooth); max-width:700px; margin:0 auto; }
 
   .tracklist-header{
@@ -408,6 +407,8 @@
   }
   .action-btn:hover{ background:var(--blood); box-shadow:0 0 20px rgba(204,18,24,.3); }
   .action-btn svg{ width:11px; height:11px; }
+  .action-btn.secondary{ border-color:var(--line-bright); }
+  .action-btn.secondary:hover{ background:rgba(138,14,18,.15); box-shadow:none; border-color:var(--blood); }
 
   .track-items{ display:flex; flex-direction:column; gap:1px; }
 
@@ -450,15 +451,15 @@
   .eq span:nth-child(3){ height:55%; animation-delay:.24s; }
   @keyframes eqBounce{ 0%,100%{ transform:scaleY(.3); } 50%{ transform:scaleY(1); } }
 
-  /* PLAYER BAR - Floating panel */
+  /* PLAYER BAR — rebuilt so volume + progress ALWAYS render, on every screen size */
   .player-bar{
     position:fixed; left:.5rem; right:.5rem; bottom:.5rem; z-index:200;
     background:rgba(4,2,3,.96);
     backdrop-filter:blur(24px);
     -webkit-backdrop-filter:blur(24px);
     border:1px solid var(--line);
-    padding:.7rem 1.2rem calc(.7rem + env(safe-area-inset-bottom));
-    display:flex; flex-direction:column; gap:.5rem;
+    padding:.75rem 1.1rem calc(.75rem + env(safe-area-inset-bottom));
+    display:flex; flex-direction:column; gap:.55rem;
     transform:translateY(calc(100% + .5rem));
     transition:transform .4s var(--ease-smooth);
     box-shadow:0 8px 32px rgba(0,0,0,.6);
@@ -472,9 +473,23 @@
     opacity:.4;
   }
 
-  .player-row{ display:flex; align-items:center; gap:.9rem; }
+  .progress-row{ display:flex; align-items:center; gap:.6rem; }
+  .time{
+    font-size:.58rem; color:var(--ash-dim); font-variant-numeric:tabular-nums;
+    width:32px; flex-shrink:0;
+    user-select:none;
+  }
+  .time.time-end{ text-align:right; }
 
-  .player-track-info{ flex:1; min-width:0; display:flex; align-items:center; gap:.7rem; }
+  .player-row{
+    display:flex; align-items:center; gap:.7rem;
+    flex-wrap:wrap;
+  }
+
+  .player-track-info{
+    flex:1 1 140px; min-width:0; display:flex; align-items:center; gap:.7rem;
+    order:1;
+  }
   .player-cover-thumb{
     width:36px; height:36px; border-radius:var(--radius-sm);
     object-fit:cover; flex-shrink:0;
@@ -492,7 +507,11 @@
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
 
-  .player-controls{ display:flex; align-items:center; gap:.25rem; flex-shrink:0; }
+  .player-controls{
+    display:flex; align-items:center; gap:.15rem; flex-shrink:0;
+    order:2;
+    margin:0 auto;
+  }
 
   .ctrl-btn{
     background:none; border:none; color:var(--bone);
@@ -528,16 +547,14 @@
   .play-toggle:hover{ background:var(--blood); box-shadow:0 0 20px rgba(204,18,24,.4); }
   .play-toggle svg{ width:15px; height:15px; }
 
-  .progress-row{ display:flex; align-items:center; gap:.6rem; }
-  .time{
-    font-size:.58rem; color:var(--ash-dim); font-variant-numeric:tabular-nums;
-    width:30px; flex-shrink:0;
-    user-select:none;
+  /* Volume: always visible, no min-width gate. Shrinks gracefully instead of disappearing. */
+  .volume-wrap{
+    display:flex; align-items:center; gap:.4rem; position:relative;
+    order:3;
+    flex:0 1 130px;
+    min-width:78px;
+    justify-content:flex-end;
   }
-  .time.time-end{ text-align:right; }
-
-  .volume-wrap{ display:none; align-items:center; gap:.5rem; position:relative; }
-  @media (min-width:640px){ .volume-wrap{ display:flex; } }
 
   .volume-icon-btn{
     background:none; border:none; color:var(--ash);
@@ -550,7 +567,7 @@
 
   .slider-track{
     position:relative;
-    height:12px;
+    height:20px;
     display:flex; align-items:center;
     cursor:pointer;
     touch-action:none;
@@ -558,52 +575,53 @@
   }
   .slider-track .slider-rail{
     position:absolute; left:0; right:0; top:50%;
-    height:2px; transform:translateY(-50%);
-    background:var(--line);
-    border-radius:1px;
+    height:3px; transform:translateY(-50%);
+    background:var(--line-bright);
+    border-radius:2px;
     overflow:visible;
     transition:height .12s;
   }
-  .slider-track:hover .slider-rail, .slider-track.dragging .slider-rail{ height:4px; }
+  .slider-track:hover .slider-rail, .slider-track.dragging .slider-rail{ height:5px; }
 
   .slider-fill{
     position:absolute; left:0; top:0; height:100%;
     background:var(--blood-bright);
     width:0%;
-    border-radius:1px;
+    border-radius:2px;
     pointer-events:none;
     box-shadow:0 0 6px rgba(204,18,24,.4);
   }
   .volume-track .slider-fill{ background:var(--ash-bright); box-shadow:none; }
   .volume-track.dragging .slider-fill, .volume-track:hover .slider-fill{ background:var(--blood-bright); box-shadow:0 0 6px rgba(204,18,24,.3); }
 
+  /* Thumb visible by default (not hover-only) so touch/mobile can always see & grab it */
   .slider-thumb{
     position:absolute; top:50%; left:0%;
-    width:9px; height:9px;
+    width:11px; height:11px;
     background:var(--bone);
     border:2px solid var(--blood-bright);
     border-radius:50%;
-    transform:translate(-50%,-50%) scale(0);
+    transform:translate(-50%,-50%) scale(1);
     transition:transform .15s var(--ease-spring);
     pointer-events:none;
-    box-shadow:0 1px 4px rgba(0,0,0,.4);
+    box-shadow:0 1px 4px rgba(0,0,0,.5);
   }
+  .volume-track .slider-thumb{ border-color:var(--ash-bright); }
+  .volume-track:hover .slider-thumb, .volume-track.dragging .slider-thumb{ border-color:var(--blood-bright); }
+
   .slider-track:hover .slider-thumb,
   .slider-track:focus-visible .slider-thumb,
   .slider-track.dragging .slider-thumb{
-    transform:translate(-50%,-50%) scale(1);
-  }
-  .slider-track.dragging .slider-thumb{
-    transform:translate(-50%,-50%) scale(1.3);
+    transform:translate(-50%,-50%) scale(1.25);
   }
 
   .progress-track{ flex:1; }
 
-  .volume-track-wrap{ width:72px; }
+  .volume-track-wrap{ width:100%; min-width:56px; }
   .volume-track-wrap .slider-track{ width:100%; }
 
   .volume-percent{
-    position:absolute; bottom:22px; left:50%; transform:translateX(-50%);
+    position:absolute; bottom:26px; right:0;
     background:var(--void-3); border:1px solid var(--line-bright);
     color:var(--bone); font-size:.55rem; font-weight:700;
     padding:.2rem .4rem; border-radius:var(--radius-sm);
@@ -612,8 +630,8 @@
     font-variant-numeric:tabular-nums;
   }
   .volume-wrap:hover .volume-percent,
-  .volume-track.dragging + .volume-percent,
-  .volume-track-wrap:has(.dragging) .volume-percent{ opacity:1; }
+  .volume-wrap:focus-within .volume-percent,
+  .volume-wrap.dragging-active .volume-percent{ opacity:1; }
 
   /* TOASTS */
   .toast-stack{
@@ -659,15 +677,23 @@
     padding:2rem 0; text-align:center; opacity:.7;
   }
 
-  @media (max-width:520px){
-    :root{ --player-h:110px; }
+  @media (max-width:640px){
+    :root{ --player-h:158px; }
     .albums-grid{ grid-template-columns:repeat(auto-fill,minmax(125px,1fr)); gap:.7rem; }
     .tracklist-cover{ width:90px; height:90px; }
     .tracklist-info h2{ font-size:1.15rem; }
     .content-area{ padding:1rem; padding-bottom:calc(var(--player-h) + 1.2rem); }
     .player-track-title{ font-size:.68rem; }
     .player-cover-thumb{ width:30px; height:30px; }
-    .player-bar{ left:.25rem; right:.25rem; bottom:.25rem; padding:.6rem 1rem; border-radius:var(--radius-md); }
+    .player-bar{ left:.25rem; right:.25rem; bottom:.25rem; padding:.7rem 1rem calc(.7rem + env(safe-area-inset-bottom)); border-radius:var(--radius-md); }
+    .player-row{ justify-content:space-between; }
+    .player-track-info{ flex-basis:100%; order:0; margin-bottom:.15rem; }
+    .player-controls{ order:1; margin:0; }
+    .volume-wrap{ order:2; flex:1 1 auto; max-width:none; }
+  }
+
+  @media (max-width:360px){
+    .volume-wrap{ min-width:64px; }
   }
 </style>
 </head>
@@ -763,7 +789,7 @@
           <span class="repeat-one-badge" id="repeatOneBadge" style="display:none;">1</span>
         </button>
       </div>
-      <div class="volume-wrap">
+      <div class="volume-wrap" id="volumeWrap">
         <button class="volume-icon-btn" id="volumeIconBtn" aria-label="Mute or unmute">
           <svg viewBox="0 0 24 24" fill="currentColor" id="volumeIcon"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M15.5 8.5a5 5 0 010 7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
         </button>
@@ -818,6 +844,7 @@
   const timeCurrent     = document.getElementById('timeCurrent');
   const timeTotal        = document.getElementById('timeTotal');
 
+  const volumeWrap     = document.getElementById('volumeWrap');
   const volumeTrack   = document.getElementById('volumeTrack');
   const volumeFill      = document.getElementById('volumeFill');
   const volumeThumb      = document.getElementById('volumeThumb');
@@ -843,6 +870,7 @@
     'ENTRANCE/wake-up-filthy.mp3'
   ];
 
+  // ---- Discography data --------------------------------------------------
   const albums = [
     {
       name: 'NARCISSIST',
@@ -885,6 +913,61 @@
         { name: 'What (feat. MADEINTYO, Lil Yachty & UnoTheActivist)', file: '/CA$H CARTI [LOST FILES]/16. What (feat. MADEINTYO, Lil Yachty & UnoTheActivist).mp3' },
         { name: 'Step (feat. Yung Gleesh)', file: '/CA$H CARTI [LOST FILES]/17. Step (feat. Yung Gleesh).mp3' }
       ]
+    },
+    {
+      name: 'WHOLE LOTTA RED [V1]',
+      folder: 'WHOLE LOTTA RED [V1]',
+      cover: '/WHOLE LOTTA RED [V1]/WLRV1.png',
+      tracks: [
+        { name: 'Arm & Leg', file: '/WHOLE LOTTA RED [V1]/01 Arm & Leg.mp3' },
+        { name: 'Butterfly Doors', file: '/WHOLE LOTTA RED [V1]/02 Butterfly Doors.mp3' },
+        { name: 'Bouldercrest (feat. Offset)', file: '/WHOLE LOTTA RED [V1]/03 Bouldercrest (feat. Offset).mp3' },
+        { name: 'Pop Bottles', file: '/WHOLE LOTTA RED [V1]/04 Pop Bottles.mp3' },
+        { name: 'Dropped Out', file: '/WHOLE LOTTA RED [V1]/05 Dropped Out.mp3' },
+        { name: 'Houdini (feat. Travis Scott)', file: '/WHOLE LOTTA RED [V1]/06 Houdini (feat. Travis Scott).mp3' },
+        { name: 'No Lie', file: '/WHOLE LOTTA RED [V1]/07 No Lie.mp3' },
+        { name: 'Did It Again', file: '/WHOLE LOTTA RED [V1]/08 Did It Again.mp3' },
+        { name: 'Buffy The Body', file: '/WHOLE LOTTA RED [V1]/09 Buffy The Body.mp3' },
+        { name: 'Back Up (feat. Offset)', file: '/WHOLE LOTTA RED [V1]/10 Back Up (feat. Offset).mp3' },
+        { name: 'Hellcat', file: '/WHOLE LOTTA RED [V1]/11 Hellcat.mp3' },
+        { name: 'Lobby', file: '/WHOLE LOTTA RED [V1]/12 Lobby.mp3' },
+        { name: 'Molly', file: '/WHOLE LOTTA RED [V1]/13 Molly.mp3' },
+        { name: 'Watch (feat. Kanye West, Lil Uzi Vert, Travis Scott)', file: '/WHOLE LOTTA RED [V1]/14 Watch (feat. Kanye West, Lil Uzi Vert, Travis Scott).mp3' },
+        { name: 'Skeleton', file: '/WHOLE LOTTA RED [V1]/15 Skeleton.mp3' },
+        { name: 'Cancun', file: '/WHOLE LOTTA RED [V1]/16 Cancun.mp3' },
+        { name: 'Fashion Killa', file: '/WHOLE LOTTA RED [V1]/17 Fashion Killa.mp3' },
+        { name: 'Nine Nine', file: '/WHOLE LOTTA RED [V1]/18 Nine Nine.mp3' }
+      ]
+    },
+    {
+      name: 'WHOLE LOTTA RED [V2]',
+      folder: 'WHOLE LOTTA RED [V2]',
+      cover: '/WHOLE LOTTA RED [V2]/WLRV2.png',
+      tracks: [
+        { name: 'ATL', file: '/WHOLE LOTTA RED [V2]/01. ATL.mp3' },
+        { name: 'Friends', file: '/WHOLE LOTTA RED [V2]/02. Friends.mp3' },
+        { name: 'Athena', file: '/WHOLE LOTTA RED [V2]/03. Athena.mp3' },
+        { name: 'Dreams', file: '/WHOLE LOTTA RED [V2]/04. Dreams.mp3' },
+        { name: 'Red Ice', file: '/WHOLE LOTTA RED [V2]/05. Red Ice.mp3' },
+        { name: '2MANY', file: '/WHOLE LOTTA RED [V2]/06. 2MANY.mp3' },
+        { name: 'u kan do it too.', file: '/WHOLE LOTTA RED [V2]/07. u kan do it too..mp3' },
+        { name: 'SRT!', file: '/WHOLE LOTTA RED [V2]/08. SRT!.mp3' },
+        { name: 'Money & Drugs', file: '/WHOLE LOTTA RED [V2]/09. Money & Drugs.mp3' },
+        { name: 'VVV', file: '/WHOLE LOTTA RED [V2]/10. VVV.mp3' },
+        { name: "Goin' Outta Style", file: "/WHOLE LOTTA RED [V2]/11. Goin' Outta Style.mp3" },
+        { name: 'Cartier', file: '/WHOLE LOTTA RED [V2]/12. Cartier.mp3' },
+        { name: 'Rockstar Tracks', file: '/WHOLE LOTTA RED [V2]/13. Rockstar Tracks.mp3' },
+        { name: 'Headshot', file: '/WHOLE LOTTA RED [V2]/14. Headshot.mp3' },
+        { name: 'Ballin', file: '/WHOLE LOTTA RED [V2]/15. Ballin.mp3' },
+        { name: 'Designer Shoes', file: '/WHOLE LOTTA RED [V2]/16. Designer Shoes.mp3' },
+        { name: 'Celine', file: '/WHOLE LOTTA RED [V2]/17. Celine.mp3' },
+        { name: 'Pvris', file: '/WHOLE LOTTA RED [V2]/18. Pvris.mp3' },
+        { name: 'Too Much', file: '/WHOLE LOTTA RED [V2]/19. Too Much.mp3' },
+        { name: 'Xan', file: '/WHOLE LOTTA RED [V2]/20. Xan.mp3' },
+        { name: 'Diamonds', file: '/WHOLE LOTTA RED [V2]/21. Diamonds.mp3' },
+        { name: 'My Cup', file: '/WHOLE LOTTA RED [V2]/22. My Cup.mp3' },
+        { name: "Goin' Outta Style (DaBaby Remix)", file: "/WHOLE LOTTA RED [V2]/23. Goin' Outta Style (DaBaby Remix).mp3" }
+      ]
     }
   ];
 
@@ -904,6 +987,7 @@
   let lastNonZeroVolume = 0.6;
   let isMuted = false;
   let repeatMode = 'off';
+  let shuffleQueue = null;
 
   function fmtTime(sec){
     if (!isFinite(sec) || sec < 0) return '0:00';
@@ -976,6 +1060,12 @@
     }
   });
 
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : str;
+    return div.innerHTML;
+  }
+
   function renderAlbums(filterText){
     albumsGrid.innerHTML = '';
     const q = (filterText || '').trim().toLowerCase();
@@ -1006,8 +1096,7 @@
       card.setAttribute('aria-label', `Open ${record.name}`);
       card.innerHTML = `
         <div class="album-cover-wrap">
-          <img class="album-cover" src="${record.cover}" alt="" loading="lazy"
-               onerror="this.onerror=null;this.src='${coverFallback(record.name)}'">
+          <img class="album-cover" src="${encodeURI(record.cover)}" alt="" loading="lazy">
           <div class="album-cover-play">
             <svg viewBox="0 0 24 24" fill="#f0ebe8"><circle cx="12" cy="12" r="10" fill="rgba(3,1,2,.5)" stroke="#cc1218" stroke-width=".8"/><path d="M9.5 7.5l8 4.5-8 4.5z"/></svg>
           </div>
@@ -1015,16 +1104,15 @@
         <div class="album-name">${escapeHtml(record.name)}</div>
         <div class="album-meta">${record.tracks.length} track${record.tracks.length === 1 ? '' : 's'}</div>
       `;
+      const coverImg = card.querySelector('.album-cover');
+      coverImg.addEventListener('error', function handler(){
+        coverImg.removeEventListener('error', handler);
+        coverImg.src = coverFallback(record.name);
+      });
       card.addEventListener('click', () => openAlbum(record.name));
       card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openAlbum(record.name); } });
       albumsGrid.appendChild(card);
     });
-  }
-
-  function escapeHtml(str){
-    const div = document.createElement('div');
-    div.textContent = str == null ? '' : str;
-    return div.innerHTML;
   }
 
   function openAlbum(albumName){
@@ -1043,8 +1131,7 @@
   function renderTracklistBody(record){
     tracklistContent.innerHTML = `
       <div class="tracklist-header">
-        <img class="tracklist-cover" src="${record.cover}" alt=""
-             onerror="this.onerror=null;this.src='${coverFallback(record.name)}'">
+        <img class="tracklist-cover" src="${encodeURI(record.cover)}" alt="">
         <div class="tracklist-info">
           <div class="tracklist-eyebrow">Release</div>
           <h2>${escapeHtml(record.name)}</h2>
@@ -1054,11 +1141,21 @@
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               Play all
             </button>
+            <button class="action-btn secondary" id="shuffleBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+              Shuffle
+            </button>
           </div>
         </div>
       </div>
       <div class="track-items" id="trackItems"></div>
     `;
+
+    const coverImg = tracklistContent.querySelector('.tracklist-cover');
+    coverImg.addEventListener('error', function handler(){
+      coverImg.removeEventListener('error', handler);
+      coverImg.src = coverFallback(record.name);
+    });
 
     const trackItems = document.getElementById('trackItems');
     record.tracks.forEach((track, index) => {
@@ -1079,7 +1176,19 @@
     });
 
     document.getElementById('playAllBtn').addEventListener('click', () => {
+      shuffleQueue = null;
       loadAndPlay(record.name, 0);
+    });
+
+    document.getElementById('shuffleBtn').addEventListener('click', () => {
+      const order = record.tracks.map((_, i) => i);
+      for (let i = order.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      shuffleQueue = order;
+      loadAndPlay(record.name, order[0]);
+      showToast('Shuffling ' + record.name);
     });
 
     refreshTrackHighlight();
@@ -1121,6 +1230,8 @@
     const track = record.tracks[index];
     if (!track) return;
 
+    if (albumName !== currentAlbum) shuffleQueue = null;
+
     currentAlbum = albumName;
     currentIndex = index;
 
@@ -1133,9 +1244,9 @@
 
     playerTrackTitle.textContent = track.name;
     playerAlbumName.textContent = record.name;
-    playerCoverThumb.src = record.cover;
-    playerCoverThumb.style.display = 'block';
+    playerCoverThumb.src = encodeURI(record.cover);
     playerCoverThumb.onerror = function(){ this.onerror=null; this.src = coverFallback(record.name); };
+    playerCoverThumb.style.display = 'block';
     playerBar.classList.add('show');
     refreshTrackHighlight();
   }
@@ -1152,7 +1263,7 @@
   function refreshTrackHighlight(){
     document.querySelectorAll('.track-item').forEach(item => {
       const idx = Number(item.dataset.index);
-      const isPlaying = currentAlbum && idx === currentIndex && getCurrentRecord() && albumsMatchCurrentView();
+      const isPlaying = currentAlbum && idx === currentIndex && albumsMatchCurrentView();
       item.classList.toggle('playing', !!isPlaying);
       const status = item.querySelector('.track-status');
       if (!status || item.classList.contains('errored')) return;
@@ -1164,7 +1275,7 @@
 
   function albumsMatchCurrentView(){
     const headerTitle = document.querySelector('.tracklist-info h2');
-    return headerTitle && currentAlbum && headerTitle.textContent === currentAlbum;
+    return !!(headerTitle && currentAlbum && headerTitle.textContent === currentAlbum);
   }
 
   function setPlayIcon(playing){
@@ -1178,6 +1289,11 @@
     else player.pause();
   });
 
+  function queuePosition(){
+    if (!shuffleQueue) return currentIndex;
+    return shuffleQueue.indexOf(currentIndex);
+  }
+
   function goToNext(){
     const record = getCurrentRecord();
     if (!record) return;
@@ -1185,6 +1301,21 @@
     if (repeatMode === 'one'){
       loadAndPlay(currentAlbum, currentIndex);
       return;
+    }
+
+    if (shuffleQueue){
+      const pos = queuePosition();
+      if (pos < shuffleQueue.length - 1){
+        loadAndPlay(currentAlbum, shuffleQueue[pos + 1]);
+        return;
+      } else if (repeatMode === 'all'){
+        loadAndPlay(currentAlbum, shuffleQueue[0]);
+        return;
+      } else {
+        currentIndex = -1;
+        refreshTrackHighlight();
+        return;
+      }
     }
 
     if (currentIndex < record.tracks.length - 1){
@@ -1203,6 +1334,12 @@
 
     if (player.currentTime > 3){
       player.currentTime = 0;
+      return;
+    }
+
+    if (shuffleQueue){
+      const pos = queuePosition();
+      if (pos > 0) loadAndPlay(currentAlbum, shuffleQueue[pos - 1]);
       return;
     }
 
@@ -1347,6 +1484,8 @@
     trackEl: volumeTrack,
     fillEl: volumeFill,
     thumbEl: volumeThumb,
+    onDragStart: () => { volumeWrap.classList.add('dragging-active'); },
+    onDragEnd: () => { volumeWrap.classList.remove('dragging-active'); },
     onChange: applyVolume
   });
 
