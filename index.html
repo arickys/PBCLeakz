@@ -90,6 +90,7 @@
       gap: 1.2rem;
       transition: transform 0.1s ease;
       padding: 0.5rem;
+      cursor: pointer;
     }
 
     .click-trigger:hover {
@@ -111,7 +112,6 @@
       box-shadow: 0 0 50px rgba(220, 0, 0, 0.35);
       position: relative;
       overflow: hidden;
-      cursor: pointer;
     }
 
     .click-trigger:hover .open-button {
@@ -354,13 +354,15 @@
     const enterBtn = document.getElementById('enterButton');
 
     const entranceMP3s = [
-      'playboi-carti-what_lCCvSas.mp3',
-      'seyuh-carti.mp3',
-      'waeh-carti.mp3',
-      'wake-up-filthy.mp3'
+      'ENTRANCE/playboi-carti-what_lCCvSas.mp3',
+      'ENTRANCE/seyuh-carti.mp3',
+      'ENTRANCE/waeh-carti.mp3',
+      'ENTRANCE/wake-up-filthy.mp3'
     ];
 
     let audioElement = null;
+    let attemptCount = 0;
+    const maxAttempts = 2;
 
     main.classList.remove('active');
 
@@ -372,42 +374,44 @@
       if (audioElement) {
         audioElement.pause();
         audioElement.remove();
+        audioElement = null;
+      }
+
+      attemptCount = 0;
+      tryPlayAudio();
+    }
+
+    function tryPlayAudio() {
+      if (attemptCount >= maxAttempts) {
+        console.log('Max attempts reached, continuing without audio');
+        return;
       }
 
       const randomFile = getRandomMP3();
+      attemptCount++;
       
       audioElement = new Audio();
       audioElement.src = randomFile;
       audioElement.volume = 0.5;
       audioElement.preload = 'auto';
-      
-      audioElement.addEventListener('canplaythrough', () => {
+
+      audioElement.onloadeddata = () => {
         audioElement.currentTime = 0;
         audioElement.play().then(() => {
-          console.log('Now playing: ' + randomFile);
-        }).catch(err => {
-          console.log('Playback failed, trying direct play...');
-          audioElement.muted = true;
-          audioElement.play().then(() => {
-            audioElement.muted = false;
-          }).catch(() => {});
+          console.log('Playing: ' + randomFile);
+        }).catch(() => {
+          console.log('Autoplay blocked, will try on user interaction');
         });
-      });
+      };
 
-      audioElement.addEventListener('error', () => {
-        console.log('Error loading: ' + randomFile + ' - trying next file...');
-        const nextFile = entranceMP3s[Math.floor(Math.random() * entranceMP3s.length)];
-        audioElement.src = nextFile;
-        audioElement.load();
-      });
+      audioElement.onerror = () => {
+        console.log('File not found: ' + randomFile);
+        if (attemptCount < maxAttempts) {
+          setTimeout(() => tryPlayAudio(), 500);
+        }
+      };
 
       audioElement.load();
-
-      setTimeout(() => {
-        if (audioElement.readyState === 0) {
-          audioElement.play().catch(() => {});
-        }
-      }, 100);
     }
 
     function revealArchive() {
@@ -428,6 +432,12 @@
         window.navigator.vibrate(25);
       }
     }
+
+    document.body.addEventListener('click', function initAudioOnce() {
+      if (audioElement && audioElement.paused && audioElement.readyState >= 2) {
+        audioElement.play().catch(() => {});
+      }
+    }, { once: true });
 
     enterBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -460,12 +470,6 @@
         }
       });
     });
-
-    document.addEventListener('click', function initAudio() {
-      if (audioElement && audioElement.paused) {
-        audioElement.play().catch(() => {});
-      }
-    }, { once: true });
   </script>
 </body>
 </html>
