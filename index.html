@@ -409,17 +409,6 @@
     font-size:.68rem; letter-spacing:.02em; word-break:break-all;
   }
 
-  @keyframes shimmer{
-    0%{ background-position:-200% 0; }
-    100%{ background-position:200% 0; }
-  }
-  .skeleton{
-    background:linear-gradient(90deg, var(--void-2) 25%, #150708 50%, var(--void-2) 75%);
-    background-size:200% 100%;
-    animation:shimmer 1.4s ease-in-out infinite;
-  }
-  .album-meta.loading{ color:var(--ash-dim); }
-
   @media (max-width:520px){
     .albums-grid{ grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:.8rem; }
     .tracklist-cover{ width:96px; height:96px; }
@@ -542,95 +531,66 @@
     'ENTRANCE/wake-up-filthy.mp3'
   ];
 
-  // Just list folder names here. Everything else — tracklist and cover art —
-  // is auto-discovered by reading each folder's directory listing.
-  // Add a new album by adding one more string to this array.
-  const ALBUMS = [
-    'NARCISSIST',
-    'CA$H CARTI [LOST FILES]'
+  // ---------------------------------------------------------------
+  // OLD METHOD, RESTORED: fully hardcoded album/track data.
+  // No fetch, no directory-listing parsing, no discovery step.
+  // Works on any static host (Vercel, Netlify, GitHub Pages, etc.)
+  // because the browser is never asked to "list a folder" — every
+  // file path is just written directly into this array.
+  //
+  // To add a new album: copy one of the objects below, change
+  // name/folder/cover, and list every track's file path.
+  // ---------------------------------------------------------------
+  const albums = [
+    {
+      name: 'NARCISSIST',
+      folder: 'NARCISSIST',
+      cover: '/NARCISSIST/ALBUMICON.png',
+      tracks: [
+        { name: '24 Songs', file: '/NARCISSIST/24 Songs.mp3' },
+        { name: 'Brand New', file: '/NARCISSIST/Brand New.mp3' },
+        { name: 'GO', file: '/NARCISSIST/GO.mp3' },
+        { name: 'HEARD YALL GETTIN MONEY', file: '/NARCISSIST/HEARD YALL GETTIN MONEY.mp3' },
+        { name: 'Hold Up (feat. future)', file: '/NARCISSIST/Hold Up (feat. future).mp3' },
+        { name: 'Killers', file: '/NARCISSIST/Killers.mp3' },
+        { name: 'R.I.P D. Hill', file: '/NARCISSIST/R.I.P D. Hill.mp3' },
+        { name: 'ROCKSTAR', file: '/NARCISSIST/ROCKSTAR.mp3' },
+        { name: 'Sights', file: '/NARCISSIST/Sights.mp3' },
+        { name: 'TWO OUT', file: '/NARCISSIST/TWO OUT.mp3' },
+        { name: 'Tryna Get Down', file: '/NARCISSIST/Tryna Get Down.mp3' }
+      ]
+    },
+    {
+      name: 'CA$H CARTI [LOST FILES]',
+      folder: 'CA$H CARTI [LOST FILES]',
+      cover: '/CA$H CARTI [LOST FILES]/noicon.png',
+      tracks: [
+        { name: 'FeFe (feat. Pollari)', file: '/CA$H CARTI [LOST FILES]/01. FeFe (feat. Pollari).mp3' },
+        { name: 'In The Party (feat. Spade Guwop & Johnny Cinco)', file: '/CA$H CARTI [LOST FILES]/02. In The Party (feat. Spade Guwop & Johnny Cinco).mp3' },
+        { name: 'Just A Dream (feat. ManMan Savage)', file: '/CA$H CARTI [LOST FILES]/03. Just A Dream (feat. ManMan Savage).mp3' },
+        { name: 'No Pressure (feat. Rich The Kid)', file: '/CA$H CARTI [LOST FILES]/04. No Pressure (feat. Rich The Kid).mp3' },
+        { name: 'LSD II (Wit Da Fanta) [feat. Cultie]', file: '/CA$H CARTI [LOST FILES]/05. LSD II (Wit Da Fanta) [feat. Cultie].mp3' },
+        { name: 'Peepin (feat. Gucci Mane & 21 Savage)', file: '/CA$H CARTI [LOST FILES]/06. Peepin (feat. Gucci Mane & 21 Savage).mp3' },
+        { name: 'Dumb Hoe (feat. Jace)', file: '/CA$H CARTI [LOST FILES]/07. Dumb Hoe (feat. Jace).mp3' },
+        { name: 'Scope (feat. ManMan Savage & ReddSmash)', file: '/CA$H CARTI [LOST FILES]/08. Scope (feat. ManMan Savage & ReddSmash).mp3' },
+        { name: 'Left Right (feat. Lil Uzi Vert)', file: '/CA$H CARTI [LOST FILES]/09. Left Right (feat. Lil Uzi Vert).mp3' },
+        { name: 'Ohh (feat. JuiceDaSavage)', file: '/CA$H CARTI [LOST FILES]/10. Ohh (feat. JuiceDaSavage).mp3' },
+        { name: 'Run It (feat. Lil Yachty)', file: '/CA$H CARTI [LOST FILES]/11. Run It (feat. Lil Yachty).mp3' },
+        { name: 'Too Much Dope (feat. KEY!)', file: '/CA$H CARTI [LOST FILES]/12. Too Much Dope (feat. KEY!).mp3' },
+        { name: 'Splur Gang (feat. UnoTheActivist & Thouxanbandfauni)', file: '/CA$H CARTI [LOST FILES]/13. Splur Gang (feat. UnoTheActivist & Thouxanbandfauni).mp3' },
+        { name: 'On The Block (feat. Fredo Santana, Yung Gleesh, K$upreme & Lil Yachty)', file: '/CA$H CARTI [LOST FILES]/14. On The Block (feat. Fredo Santana, Yung Gleesh, K$upreme & Lil Yachty).mp3' },
+        { name: 'Whole Thang (feat. UnoTheActivist & Maxo Kream)', file: '/CA$H CARTI [LOST FILES]/15. Whole Thang (feat. UnoTheActivist & Maxo Kream).mp3' },
+        { name: 'What (feat. MADEINTYO, Lil Yachty & UnoTheActivist)', file: '/CA$H CARTI [LOST FILES]/16. What (feat. MADEINTYO, Lil Yachty & UnoTheActivist).mp3' },
+        { name: 'Step (feat. Yung Gleesh)', file: '/CA$H CARTI [LOST FILES]/17. Step (feat. Yung Gleesh).mp3' }
+      ]
+    }
   ];
 
-  // In-memory cache: folderName -> { name, folder, cover, tracks, status, error }
+  // In-memory cache keyed by album name, so lookups by name are O(1)
+  // and the rest of the player code (loadAndPlay/next/prev/ended) can
+  // just do albumState[currentAlbum] the same way it did before.
   const albumState = {};
-
-  function makeAlbumRecord(folderName){
-    return { name: folderName, folder: folderName, cover: null, tracks: [], status: 'loading', error: null };
-  }
-
-  function naturalCompare(a, b){
-    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
-  }
-
-  // Strips a leading track-number prefix like "01 - ", "01_", "01.", "Track 01 - "
-  function deriveTrackTitle(filename){
-    let base = filename.replace(/\.[^/.]+$/, ''); // drop extension
-    try { base = decodeURIComponent(base); } catch(e){ /* leave as-is */ }
-    base = base.replace(/^\s*(track\s*)?\d{1,3}\s*[-._]\s*/i, '');
-    return base.trim() || filename;
-  }
-
-  // Parses a standard directory-index HTML page (Apache/nginx/Caddy/http.server style)
-  // and returns { mp3s: [{name,url}], pngs: [{name,url}] } relative to baseUrl.
-  function parseDirectoryListing(html, baseUrl){
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const anchors = Array.from(doc.querySelectorAll('a[href]'));
-    const mp3s = [];
-    const pngs = [];
-
-    anchors.forEach(a => {
-      let href = a.getAttribute('href');
-      if (!href) return;
-      if (href.startsWith('?') || href.startsWith('#')) return;
-      if (href === '../' || href === '..' || href === '/' ) return;
-      if (/^[a-z]+:\/\//i.test(href)) return; // skip absolute/external links
-
-      let decoded;
-      try { decoded = decodeURIComponent(href); } catch(e){ decoded = href; }
-      const filename = decoded.split('/').filter(Boolean).pop();
-      if (!filename) return;
-
-      const lower = filename.toLowerCase();
-      const url = new URL(href, baseUrl).href;
-
-      if (lower.endsWith('.mp3')) mp3s.push({ name: filename, url });
-      else if (lower.endsWith('.png')) pngs.push({ name: filename, url });
-    });
-
-    mp3s.sort((a,b) => naturalCompare(a.name, b.name));
-    return { mp3s, pngs };
-  }
-
-  async function discoverAlbum(folderName){
-    const record = makeAlbumRecord(folderName);
-    albumState[folderName] = record;
-
-    const folderUrl = encodeURI('/' + folderName + '/');
-    try {
-      const res = await fetch(folderUrl);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const html = await res.text();
-      const { mp3s, pngs } = parseDirectoryListing(html, new URL(folderUrl, window.location.href).href);
-
-      if (!mp3s.length){
-        record.status = 'error';
-        record.error = 'Folder found, but no .mp3 files were listed in it.';
-        return record;
-      }
-
-      // Album icon: prefer a file literally named noicon.png if present,
-      // otherwise any .png in the folder, in natural sort order.
-      const namedIcon = pngs.find(p => p.name.toLowerCase() === 'noicon.png');
-      const chosenIcon = namedIcon || pngs.sort((a,b) => naturalCompare(a.name,b.name))[0];
-
-      record.cover = chosenIcon ? chosenIcon.url : null;
-      record.tracks = mp3s.map(f => ({ name: deriveTrackTitle(f.name), file: f.url }));
-      record.status = 'ready';
-    } catch (err){
-      record.status = 'error';
-      record.error = 'Could not read this folder\u2019s file listing. The server may not have directory listing enabled.';
-    }
-    return record;
-  }
+  albums.forEach(record => { albumState[record.name] = record; });
 
   let entranceAudio = null;
   let fadeTimer = null;
@@ -639,7 +599,7 @@
   player.preload = 'metadata';
   player.volume = 0.6;
 
-  let currentAlbum = null;
+  let currentAlbum = null; // holds the album NAME (string) once opened
   let currentIndex = -1;
   let isSeeking = false;
 
@@ -712,108 +672,53 @@
 
   function renderAlbums(){
     albumsGrid.innerHTML = '';
-    if (!ALBUMS.length){
+    if (!albums.length){
       albumsGrid.innerHTML = '<div class="empty-state">No releases catalogued yet.</div>';
       return;
     }
 
-    ALBUMS.forEach(folderName => {
+    albums.forEach(record => {
       const card = document.createElement('div');
       card.className = 'album-card';
-      card.dataset.folder = folderName;
+      card.dataset.name = record.name;
       card.tabIndex = 0;
       card.setAttribute('role','button');
-      card.setAttribute('aria-label', `Open ${folderName}`);
+      card.setAttribute('aria-label', `Open ${record.name}`);
       card.innerHTML = `
-        <div class="album-cover skeleton" data-role="cover"></div>
-        <div class="album-name">${folderName}</div>
-        <div class="album-meta loading" data-role="meta">loading…</div>
+        <img class="album-cover" src="${record.cover}" alt="" loading="lazy"
+             onerror="this.onerror=null;this.src='${coverFallback(record.name)}'">
+        <div class="album-name">${record.name}</div>
+        <div class="album-meta">${record.tracks.length} track${record.tracks.length === 1 ? '' : 's'}</div>
       `;
-      card.addEventListener('click', () => openAlbum(folderName));
-      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openAlbum(folderName); } });
+      card.addEventListener('click', () => openAlbum(record.name));
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openAlbum(record.name); } });
       albumsGrid.appendChild(card);
-
-      discoverAlbum(folderName).then(record => updateAlbumCard(folderName, record));
     });
   }
 
-  function updateAlbumCard(folderName, record){
-    const card = albumsGrid.querySelector(`.album-card[data-folder="${CSS.escape(folderName)}"]`);
-    if (!card) return;
-    const meta = card.querySelector('[data-role="meta"]');
-    const coverSlot = card.querySelector('[data-role="cover"]');
+  function openAlbum(albumName){
+    const record = albumState[albumName];
+    if (!record) return;
 
-    if (record.status === 'error'){
-      meta.textContent = 'unavailable';
-      meta.classList.remove('loading');
-      coverSlot.classList.remove('skeleton');
-      coverSlot.outerHTML = `<img class="album-cover" src="${coverFallback(folderName)}" alt="">`;
-      return;
-    }
-
-    meta.textContent = `${record.tracks.length} track${record.tracks.length === 1 ? '' : 's'}`;
-    meta.classList.remove('loading');
-    coverSlot.classList.remove('skeleton');
-    coverSlot.outerHTML = `<img class="album-cover" src="${record.cover || coverFallback(folderName)}" alt="" loading="lazy"
-         onerror="this.onerror=null;this.src='${coverFallback(folderName)}'">`;
-
-    // If the user has already opened this album while it was mid-fetch, refresh the view.
-    if (currentAlbum === folderName) renderTracklistBody(record);
-  }
-
-  async function openAlbum(folderName){
-    currentAlbum = folderName;
+    currentAlbum = albumName;
     currentIndex = -1;
 
     albumsSection.classList.replace('visible-section','hidden-section');
     tracklistSection.classList.replace('hidden-section','visible-section');
     backButton.classList.add('visible');
-    topBarTitle.textContent = folderName;
+    topBarTitle.textContent = record.name;
     window.scrollTo(0,0);
 
-    let record = albumState[folderName];
-    if (!record) record = await discoverAlbum(folderName);
-    else if (record.status === 'loading') record = await waitFor(folderName);
     renderTracklistBody(record);
   }
 
-  function waitFor(folderName){
-    return new Promise(resolve => {
-      const check = () => {
-        const rec = albumState[folderName];
-        if (rec && rec.status !== 'loading') resolve(rec);
-        else setTimeout(check, 100);
-      };
-      check();
-    });
-  }
-
   function renderTracklistBody(record){
-    if (currentAlbum !== record.folder) return;
-
-    if (record.status === 'error'){
-      tracklistContent.innerHTML = `
-        <div class="tracklist-header">
-          <img class="tracklist-cover" src="${coverFallback(record.folder)}" alt="">
-          <div class="tracklist-info">
-            <h2>${record.folder}</h2>
-            <p>0 tracks</p>
-          </div>
-        </div>
-        <div class="error-state">
-          Couldn't load this album.<br>${record.error}
-          <code>/${record.folder}/</code>
-        </div>
-      `;
-      return;
-    }
-
     tracklistContent.innerHTML = `
       <div class="tracklist-header">
-        <img class="tracklist-cover" src="${record.cover || coverFallback(record.folder)}" alt=""
-             onerror="this.onerror=null;this.src='${coverFallback(record.folder)}'">
+        <img class="tracklist-cover" src="${record.cover}" alt=""
+             onerror="this.onerror=null;this.src='${coverFallback(record.name)}'">
         <div class="tracklist-info">
-          <h2>${record.folder}</h2>
+          <h2>${record.name}</h2>
           <p>${record.tracks.length} tracks</p>
           <button class="play-all-btn" id="playAllBtn">▶ Play all</button>
         </div>
@@ -872,12 +777,12 @@
 
   function loadAndPlay(index){
     const record = getCurrentRecord();
-    if (!record || record.status !== 'ready') return;
+    if (!record) return;
     const track = record.tracks[index];
     if (!track) return;
     currentIndex = index;
 
-    player.src = track.file;
+    player.src = encodeURI(track.file);
     player.currentTime = 0;
     player.play().catch(() => {
       const row = document.querySelector(`.track-item[data-index="${index}"]`);
@@ -889,7 +794,7 @@
     });
 
     playerTrackTitle.textContent = track.name;
-    playerAlbumName.textContent = record.folder;
+    playerAlbumName.textContent = record.name;
     playerBar.classList.add('show');
     refreshTrackHighlight();
   }
