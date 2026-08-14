@@ -465,6 +465,47 @@
   .shuffle-btn.active { color: var(--accent); }
   .shuffle-btn svg { width: 22px; height: 22px; }
 
+  .download-album-btn {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    height: 40px;
+    padding: 0 1.1rem;
+    border-radius: var(--radius-pill);
+    background: none;
+    border: 1px solid var(--text-muted);
+    color: var(--text);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .01em;
+    cursor: pointer;
+    transition: border-color .15s, transform .1s, background .15s;
+    white-space: nowrap;
+  }
+  .download-album-btn:hover { border-color: var(--text); transform: translateY(-1px); }
+  .download-album-btn:active { transform: translateY(0); }
+  .download-album-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .download-album-btn.busy { opacity: .6; cursor: wait; pointer-events: none; }
+  .download-album-btn .dl-pct { font-variant-numeric: tabular-nums; min-width: 2ch; }
+
+  .track-download {
+    background: none;
+    border: none;
+    color: var(--text-sub);
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .12s, color .12s, background .12s;
+  }
+  .track-row:hover .track-download { opacity: 1; }
+  .track-download:hover { color: var(--text); background: rgba(255,255,255,.1); }
+  .track-download svg { width: 15px; height: 15px; }
+  .track-row.errored .track-download { display: none; }
+
   .track-table {
     width: 100%;
     border-collapse: collapse;
@@ -798,6 +839,8 @@
     .albums-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .9rem; }
     .album-card { padding: .75rem; }
     .quick-grid { grid-template-columns: 1fr; }
+    .download-album-btn { padding: 0 .75rem; width: 40px; }
+    .download-album-btn .dl-label { display: none; }
   }
 
   @media (max-width: 420px) {
@@ -930,6 +973,7 @@
 
   <div class="toast-stack" id="toastStack"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 (function(){
   'use strict';
@@ -1317,6 +1361,10 @@
         '<button class="shuffle-btn" id="shuffleBtn" aria-label="Shuffle play">' +
           '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3l4 4-4 4M3 7h6.5a3 3 0 012.5 1.34L14 11m3 10l4-4-4-4M3 17h6.5a3 3 0 002.5-1.34L14 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
         '</button>' +
+        '<button class="download-album-btn" id="downloadAlbumBtn">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M7 11l5 5 5-5"/><path d="M4 21h16"/></svg>' +
+          '<span class="dl-label">Download</span>' +
+        '</button>' +
       '</div>' +
       '<table class="track-table">' +
         '<thead><tr><th>#</th><th>Title</th><th></th></tr></thead>' +
@@ -1331,8 +1379,16 @@
       row.innerHTML =
         '<td class="track-num">' + (index + 1) + '</td>' +
         '<td><span class="track-title">' + escapeHtml(track.name) + '</span></td>' +
-        '<td class="track-status"></td>';
+        '<td class="track-status">' +
+          '<button class="track-download" aria-label="Download ' + escapeHtml(track.name) + '" title="Download">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M7 11l5 5 5-5"/><path d="M4 21h16"/></svg>' +
+          '</button>' +
+        '</td>';
       row.addEventListener('click', function() { loadAndPlay(record.name, index); });
+      row.querySelector('.track-download').addEventListener('click', function(e) {
+        e.stopPropagation();
+        downloadTrack(track);
+      });
       tbody.appendChild(row);
     });
 
@@ -1341,6 +1397,11 @@
       const randomIndex = Math.floor(Math.random() * record.tracks.length);
       loadAndPlay(record.name, randomIndex);
       showToast('Shuffling ' + record.name);
+    });
+    const downloadAlbumBtn = document.getElementById('downloadAlbumBtn');
+    downloadAlbumBtn.addEventListener('click', function() {
+      if (downloadAlbumBtn.classList.contains('busy')) return;
+      downloadAlbumZip(record, downloadAlbumBtn);
     });
     refreshTrackHighlight();
   }
@@ -1401,6 +1462,83 @@
     playerCoverThumb.style.display = 'block';
     playerCoverThumb.onerror = function() { this.onerror = null; this.src = coverFallback(record.name); };
     refreshTrackHighlight();
+  }
+
+  function safeFileName(name) {
+    return String(name).replace(/[\\/:*?"<>|]/g, '-').trim();
+  }
+
+  function triggerBlobDownload(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 4000);
+  }
+
+  function downloadTrack(track) {
+    // Native download attribute — the browser streams it straight to disk,
+    // no need to pull the whole file into memory first.
+    const a = document.createElement('a');
+    a.href = encodeURI(track.file);
+    a.download = safeFileName(track.name) + '.mp3';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    showToast('Downloading ' + track.name);
+  }
+
+  function downloadAlbumZip(record, btnEl) {
+    if (typeof JSZip === 'undefined') {
+      showToast("Couldn't load the zip library — try again");
+      return;
+    }
+    const label = btnEl.querySelector('.dl-label');
+    const originalLabel = label.textContent;
+    btnEl.classList.add('busy');
+    label.innerHTML = 'Preparing <span class="dl-pct">0%</span>';
+
+    const zip = new JSZip();
+    const tracks = record.tracks;
+    let completed = 0;
+
+    Promise.all(tracks.map(function(track) {
+      return fetch(encodeURI(track.file))
+        .then(function(res) {
+          if (!res.ok) throw new Error('fetch failed: ' + track.file);
+          return res.blob();
+        })
+        .then(function(blob) {
+          completed++;
+          const pct = Math.round((completed / tracks.length) * 60); // fetching = first 60%
+          const pctEl = label.querySelector('.dl-pct');
+          if (pctEl) pctEl.textContent = pct + '%';
+          zip.file(safeFileName(track.name) + '.mp3', blob);
+        })
+        .catch(function(err) {
+          console.error(err);
+          return null; // skip tracks that fail to fetch, don't abort the whole zip
+        });
+    })).then(function() {
+      label.innerHTML = 'Zipping <span class="dl-pct">60%</span>';
+      return zip.generateAsync({ type: 'blob', compression: 'STORE' }, function(meta) {
+        const pct = 60 + Math.round(meta.percent * 0.4); // zipping = final 40%
+        const pctEl = label.querySelector('.dl-pct');
+        if (pctEl) pctEl.textContent = Math.min(pct, 99) + '%';
+      });
+    }).then(function(blob) {
+      triggerBlobDownload(blob, safeFileName(record.name) + '.zip');
+      showToast('Downloaded ' + record.name);
+    }).catch(function(err) {
+      console.error(err);
+      showToast('Download failed — some tracks may be unreachable');
+    }).finally(function() {
+      btnEl.classList.remove('busy');
+      label.textContent = originalLabel;
+    });
   }
 
   function markRowErrored(index) {
