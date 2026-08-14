@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-<title>PBCLeaks</title>
+<title>PBC</title>
 <style>
   :root {
     --bg: #121212;
@@ -53,84 +53,19 @@
 
   img { -webkit-user-drag: none; user-select: none; }
 
-  /* ========== INTRO ========== */
-  .intro-overlay {
-    position: fixed; inset: 0; z-index: 999;
-    background: radial-gradient(ellipse at center, #1a0709 0%, #000 70%);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity .6s ease, visibility .6s;
-  }
-  .intro-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-  .intro-logo {
-    width: 72px; height: 72px;
-    margin-bottom: 2rem;
-    color: var(--accent);
-    filter: drop-shadow(0 0 24px rgba(224, 38, 61, .45));
-  }
-
-  .intro-title {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    text-align: center;
-  }
-
-  .intro-sub {
-    margin-top: .6rem;
-    color: var(--text-sub);
-    font-size: .95rem;
-    font-weight: 500;
-  }
-
-  .intro-enter {
-    margin-top: 2.5rem;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    font-size: .9rem;
-    font-weight: 700;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    padding: .85rem 2.8rem;
-    border-radius: var(--radius-pill);
-    cursor: pointer;
-    transition: transform .15s, background .15s, box-shadow .15s;
-  }
-  .intro-enter:hover {
-    background: var(--accent-hover);
-    transform: scale(1.04);
-    box-shadow: 0 8px 28px rgba(224, 38, 61, .45);
-  }
-  .intro-enter:active { transform: scale(.98); background: var(--accent-press); }
-
-  .intro-hint {
-    margin-top: 1rem;
-    color: var(--text-muted);
-    font-size: .75rem;
-  }
-
-  .audio-note {
-    position: absolute; bottom: 4rem;
-    color: var(--text-muted);
-    font-size: .7rem;
-    opacity: 0;
-    transition: opacity .3s;
-  }
-  .audio-note.show { opacity: 1; }
-
   /* ========== APP SHELL ========== */
   .app {
     display: grid;
     grid-template-columns: var(--sidebar-w) 1fr;
     grid-template-rows: 1fr var(--player-h);
     height: 100vh; height: 100dvh;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .4s ease;
+    animation: appIn .5s ease both;
   }
-  .app.active { opacity: 1; pointer-events: auto; }
+
+  @keyframes appIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
   /* Sidebar */
   .sidebar {
@@ -213,6 +148,7 @@
     transition: color .15s;
   }
   .sidebar-album-link:hover { color: var(--text); }
+  .sidebar-album-link.active { color: var(--accent); }
 
   /* Main content */
   .main {
@@ -297,6 +233,70 @@
     margin-bottom: 1.25rem;
   }
 
+  .greeting {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: .25rem 0 1.25rem;
+  }
+
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .75rem;
+    margin-bottom: 2.25rem;
+  }
+  @media (min-width: 700px) {
+    .quick-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (min-width: 1100px) {
+    .quick-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .quick-card {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    background: rgba(255,255,255,.06);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background .2s;
+    position: relative;
+    height: 64px;
+  }
+  .quick-card:hover { background: rgba(255,255,255,.12); }
+  .quick-card img {
+    width: 64px; height: 64px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--bg-press);
+  }
+  .quick-card span {
+    font-size: .85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: .75rem;
+  }
+  .quick-card .quick-play {
+    position: absolute;
+    right: 8px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .2s, transform .2s;
+    box-shadow: 0 6px 16px rgba(0,0,0,.4);
+    border: none;
+    cursor: pointer;
+  }
+  .quick-card:hover .quick-play { opacity: 1; transform: translateY(0); }
+  .quick-card .quick-play svg { width: 15px; height: 15px; margin-left: 1px; }
+
   .section-header {
     display: flex;
     align-items: baseline;
@@ -325,10 +325,10 @@
     border-radius: var(--radius);
     padding: 1rem;
     cursor: pointer;
-    transition: background .2s, transform .15s;
+    transition: background .25s, transform .2s;
     position: relative;
   }
-  .album-card:hover { background: var(--bg-highlight); transform: translateY(-2px); }
+  .album-card:hover { background: var(--bg-highlight); transform: translateY(-4px); }
 
   .album-cover-wrap {
     position: relative;
@@ -344,7 +344,9 @@
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform .3s;
   }
+  .album-card:hover .album-cover { transform: scale(1.03); }
 
   .play-fab {
     position: absolute;
@@ -384,7 +386,12 @@
   }
 
   /* Tracklist view */
-  .tracklist-view { max-width: 900px; }
+  .tracklist-view { max-width: 900px; animation: viewIn .3s ease both; }
+
+  @keyframes viewIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   .tracklist-header {
     display: flex;
@@ -443,6 +450,20 @@
   }
   .play-all-btn:hover { background: var(--accent-hover); transform: scale(1.06); }
   .play-all-btn svg { width: 26px; height: 26px; margin-left: 2px; }
+
+  .shuffle-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    color: var(--text-sub);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: color .15s, transform .1s;
+  }
+  .shuffle-btn:hover { color: var(--text); }
+  .shuffle-btn.active { color: var(--accent); }
+  .shuffle-btn svg { width: 22px; height: 22px; }
 
   .track-table {
     width: 100%;
@@ -776,6 +797,7 @@
     .tracklist-info h1 { font-size: 1.6rem; }
     .albums-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .9rem; }
     .album-card { padding: .75rem; }
+    .quick-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 420px) {
@@ -786,16 +808,6 @@
 </style>
 </head>
 <body>
-
-  <!-- INTRO -->
-  <div class="intro-overlay" id="introOverlay">
-    <svg class="intro-logo" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-    </svg>
-    <h1 class="intro-title">PBCLeaks</h1>
-    <button class="intro-enter" id="enterButton">Enter</button>
-    <div class="audio-note" id="audioNote">Tap to enable audio</div>
-  </div>
 
   <!-- APP -->
   <div class="app" id="mainSite">
@@ -846,6 +858,9 @@
 
       <div class="content">
         <div id="albumsSection">
+          <div class="greeting" id="greeting">Good evening</div>
+          <div class="quick-grid" id="quickGrid"></div>
+
           <div class="section-header">
             <h2 class="page-title" style="margin:0">Discography</h2>
             <span class="count" id="albumCount"></span>
@@ -919,12 +934,11 @@
 (function(){
   'use strict';
 
-  const intro = document.getElementById('introOverlay');
-  const audioNote = document.getElementById('audioNote');
   const main = document.getElementById('mainSite');
-  const enterBtn = document.getElementById('enterButton');
   const mainScroll = document.getElementById('mainScroll');
 
+  const greeting = document.getElementById('greeting');
+  const quickGrid = document.getElementById('quickGrid');
   const albumsGrid = document.getElementById('albumsGrid');
   const albumCount = document.getElementById('albumCount');
   const tracklistContent = document.getElementById('tracklistContent');
@@ -1094,10 +1108,11 @@
   ];
 
   const albumState = {};
-  albums.forEach(r => { albumState[r.name] = r; });
+  albums.forEach(function(r) { albumState[r.name] = r; });
 
   let entranceAudio = null;
   let fadeTimer = null;
+  let entrancePlayed = false;
 
   const player = new Audio();
   player.preload = 'metadata';
@@ -1156,31 +1171,59 @@
   }
 
   function playEntranceSound() {
+    if (entrancePlayed) return;
+    entrancePlayed = true;
     entranceAudio = new Audio(randomEntranceFile());
     entranceAudio.volume = 0.45;
     entranceAudio.play().then(function() {
       setTimeout(function() { fadeOutAndStop(entranceAudio, 2500); }, 1600);
     }).catch(function() {
-      audioNote.classList.add('show');
-      setTimeout(function() { audioNote.classList.remove('show'); }, 3500);
+      entrancePlayed = false;
     });
   }
 
-  function revealArchive() {
-    playEntranceSound();
-    intro.classList.add('hidden');
-    setTimeout(function() { main.classList.add('active'); }, 100);
+  // Browsers block audio until the user interacts with the page at least
+  // once — since there's no intro screen to click through anymore, we grab
+  // the very first interaction anywhere and use it to kick off the entrance
+  // sound, then get out of the way.
+  function primeEntranceOnFirstInteraction() {
+    ['pointerdown', 'keydown'].forEach(function(evt) {
+      window.addEventListener(evt, playEntranceSound, { once: true, passive: true });
+    });
   }
-
-  enterBtn.addEventListener('click', function(e) { e.stopPropagation(); revealArchive(); });
-  window.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !intro.classList.contains('hidden')) revealArchive();
-  });
+  primeEntranceOnFirstInteraction();
 
   function escapeHtml(str) {
     const d = document.createElement('div');
     d.textContent = str == null ? '' : str;
     return d.innerHTML;
+  }
+
+  function setGreeting() {
+    const h = new Date().getHours();
+    greeting.textContent = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+  }
+
+  function renderQuickPicks() {
+    quickGrid.innerHTML = albums.map(function(record) {
+      return '<div class="quick-card" data-name="' + escapeHtml(record.name) + '">' +
+        '<img src="' + record.cover + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + coverFallback(record.name) + '\'">' +
+        '<span>' + escapeHtml(record.name) + '</span>' +
+        '<button class="quick-play" aria-label="Play ' + escapeHtml(record.name) + '">' +
+          '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>' +
+        '</button>' +
+      '</div>';
+    }).join('');
+
+    quickGrid.querySelectorAll('.quick-card').forEach(function(card) {
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('.quick-play')) {
+          loadAndPlay(card.dataset.name, 0);
+        } else {
+          openAlbum(card.dataset.name);
+        }
+      });
+    });
   }
 
   function renderSidebarAlbums() {
@@ -1248,6 +1291,13 @@
     backButton.disabled = false;
     mainScroll.scrollTo({ top: 0, behavior: 'auto' });
     renderTracklistBody(record);
+    highlightSidebar(albumName);
+  }
+
+  function highlightSidebar(albumName) {
+    sidebarAlbums.querySelectorAll('.sidebar-album-link').forEach(function(el) {
+      el.classList.toggle('active', el.dataset.name === albumName);
+    });
   }
 
   function renderTracklistBody(record) {
@@ -1263,6 +1313,9 @@
       '<div class="tracklist-actions">' +
         '<button class="play-all-btn" id="playAllBtn" aria-label="Play all">' +
           '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>' +
+        '</button>' +
+        '<button class="shuffle-btn" id="shuffleBtn" aria-label="Shuffle play">' +
+          '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3l4 4-4 4M3 7h6.5a3 3 0 012.5 1.34L14 11m3 10l4-4-4-4M3 17h6.5a3 3 0 002.5-1.34L14 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
         '</button>' +
       '</div>' +
       '<table class="track-table">' +
@@ -1284,6 +1337,11 @@
     });
 
     document.getElementById('playAllBtn').addEventListener('click', function() { loadAndPlay(record.name, 0); });
+    document.getElementById('shuffleBtn').addEventListener('click', function() {
+      const randomIndex = Math.floor(Math.random() * record.tracks.length);
+      loadAndPlay(record.name, randomIndex);
+      showToast('Shuffling ' + record.name);
+    });
     refreshTrackHighlight();
   }
 
@@ -1323,6 +1381,9 @@
     if (!record) return;
     const track = record.tracks[index];
     if (!track) return;
+
+    entrancePlayed = true;
+    if (entranceAudio) fadeOutAndStop(entranceAudio, 400);
 
     currentAlbum = albumName;
     currentIndex = index;
@@ -1579,7 +1640,6 @@
 
   window.addEventListener('keydown', function(e) {
     if (document.activeElement === searchInput) return;
-    if (!main.classList.contains('active')) return;
 
     if (e.code === 'Space') {
       e.preventDefault();
@@ -1600,6 +1660,8 @@
     if (e.key.toLowerCase() === 'r') repeatBtn.click();
   });
 
+  setGreeting();
+  renderQuickPicks();
   renderSidebarAlbums();
   renderAlbums('');
 })();
