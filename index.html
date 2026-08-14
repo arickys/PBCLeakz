@@ -175,12 +175,59 @@
 
   /* Main content */
   .main {
-    background:
-      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(224,38,61,.22), transparent 60%),
-      linear-gradient(180deg, #1c0c0e 0%, var(--bg) 320px);
+    background: var(--bg);
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
+    z-index: 0;
+    isolation: isolate;
+  }
+
+  /* hazy drifting nebula */
+  .main::before {
+    content: '';
+    position: absolute;
+    inset: -15%;
+    z-index: -2;
+    background:
+      radial-gradient(620px 520px at 18% 12%, rgba(224,38,61,.38), transparent 62%),
+      radial-gradient(520px 460px at 82% 6%, rgba(130,70,255,.24), transparent 60%),
+      radial-gradient(560px 500px at 60% 78%, rgba(255,90,140,.2), transparent 60%),
+      radial-gradient(420px 420px at 6% 82%, rgba(60,180,255,.16), transparent 58%);
+    filter: blur(70px);
+    animation: nebulaDrift 46s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  /* faint twinkling starfield */
+  .main::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(1.4px 1.4px at 12% 22%, rgba(255,255,255,.85), transparent),
+      radial-gradient(1px 1px at 68% 62%, rgba(255,255,255,.65), transparent),
+      radial-gradient(1.4px 1.4px at 38% 78%, rgba(255,255,255,.55), transparent),
+      radial-gradient(1px 1px at 88% 18%, rgba(255,255,255,.75), transparent),
+      radial-gradient(1.4px 1.4px at 54% 42%, rgba(255,255,255,.45), transparent),
+      radial-gradient(1px 1px at 8% 58%, rgba(255,255,255,.65), transparent),
+      radial-gradient(1px 1px at 78% 88%, rgba(255,255,255,.5), transparent);
+    background-repeat: repeat;
+    background-size: 260px 260px;
+    opacity: .55;
+    animation: starTwinkle 7s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes nebulaDrift {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(-3%, 2.5%) scale(1.09); }
+    100% { transform: translate(2.5%, -3%) scale(1.04); }
+  }
+  @keyframes starTwinkle {
+    from { opacity: .32; }
+    to   { opacity: .62; }
   }
   .main::-webkit-scrollbar { width: 12px; }
   .main::-webkit-scrollbar-track { background: transparent; }
