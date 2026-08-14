@@ -4,25 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
 <title>PBC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #121212;
-    --bg-elevated: #181818;
-    --bg-highlight: #282828;
-    --bg-press: #1a1a1a;
+    --bg: #0c0c0d;
+    --bg-elevated: #171718;
+    --bg-highlight: #232324;
+    --bg-press: #161617;
     --sidebar: #000000;
     --text: #ffffff;
-    --text-sub: #b3b3b3;
-    --text-muted: #6a6a6a;
+    --text-sub: #ababab;
+    --text-muted: #666666;
     --accent: #E0263D;
     --accent-hover: #ff3b52;
     --accent-press: #b81f32;
-    --border: #282828;
+    --accent-glow: rgba(224, 38, 61, .5);
+    --cyan-ghost: rgba(60, 220, 255, .55);
+    --border: #232324;
     --player-h: 90px;
     --sidebar-w: 240px;
     --radius: 8px;
     --radius-pill: 500px;
-    --font: 'Circular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-display: 'Bebas Neue', 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --now-cover: none;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,6 +48,18 @@
     overflow: hidden;
     color: var(--text);
     -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    pointer-events: none;
+    opacity: .035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   ::selection { background: var(--accent); color: #fff; }
@@ -85,11 +104,13 @@
     color: var(--text);
     text-decoration: none;
   }
-  .sidebar-logo svg { width: 32px; height: 32px; color: var(--accent); flex-shrink: 0; }
+  .sidebar-logo svg { width: 32px; height: 32px; color: var(--accent); flex-shrink: 0; filter: drop-shadow(0 0 10px var(--accent-glow)); }
   .sidebar-logo span {
-    font-size: 1.35rem;
-    font-weight: 900;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 400;
+    letter-spacing: .06em;
+    line-height: 1;
   }
 
   .nav-list {
@@ -105,8 +126,10 @@
     padding: .7rem .75rem;
     border-radius: var(--radius);
     color: var(--text-sub);
-    font-size: .9rem;
+    font-size: .8rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
     cursor: pointer;
     border: none;
     background: none;
@@ -152,7 +175,9 @@
 
   /* Main content */
   .main {
-    background: linear-gradient(180deg, #241012 0%, var(--bg) 280px);
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(224,38,61,.22), transparent 60%),
+      linear-gradient(180deg, #1c0c0e 0%, var(--bg) 320px);
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
@@ -227,16 +252,18 @@
   }
 
   .page-title {
-    font-size: 1.75rem;
-    font-weight: 900;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 400;
+    letter-spacing: .02em;
     margin-bottom: 1.25rem;
   }
 
   .greeting {
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    font-weight: 900;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4.2vw, 2.75rem);
+    font-weight: 400;
+    letter-spacing: .015em;
     margin: .25rem 0 1.25rem;
   }
 
@@ -272,8 +299,9 @@
     background: var(--bg-press);
   }
   .quick-card span {
-    font-size: .85rem;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    letter-spacing: .02em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -304,8 +332,10 @@
     margin-bottom: 1rem;
   }
   .section-header h2 {
-    font-size: 1.35rem;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 400;
+    letter-spacing: .015em;
   }
   .section-header .count {
     font-size: .8rem;
@@ -325,10 +355,14 @@
     border-radius: var(--radius);
     padding: 1rem;
     cursor: pointer;
-    transition: background .25s, transform .2s;
+    transition: background .25s, transform .2s, box-shadow .25s;
     position: relative;
   }
-  .album-card:hover { background: var(--bg-highlight); transform: translateY(-4px); }
+  .album-card:hover {
+    background: var(--bg-highlight);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0,0,0,.45), 0 0 0 1px rgba(224,38,61,.15);
+  }
 
   .album-cover-wrap {
     position: relative;
@@ -345,8 +379,43 @@
     object-fit: cover;
     display: block;
     transition: transform .3s;
+    position: relative;
+    z-index: 2;
   }
   .album-card:hover .album-cover { transform: scale(1.03); }
+
+  /* chromatic-shift flicker on hover — a nod to the WLR/glitch cover art */
+  .album-cover-wrap::before,
+  .album-cover-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    transition: opacity .15s ease, transform .15s ease;
+    z-index: 3;
+  }
+  .album-cover-wrap::before { background: var(--accent); }
+  .album-cover-wrap::after { background: var(--cyan-ghost); }
+  .album-card:hover .album-cover-wrap::before {
+    opacity: .22;
+    transform: translate(-3px, 0);
+  }
+  .album-card:hover .album-cover-wrap::after {
+    opacity: .16;
+    transform: translate(3px, 0);
+  }
+
+  .album-name {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    letter-spacing: .01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: .25rem;
+  }
 
   .play-fab {
     position: absolute;
@@ -386,11 +455,40 @@
   }
 
   /* Tracklist view */
-  .tracklist-view { max-width: 900px; animation: viewIn .3s ease both; }
+  .tracklist-view { max-width: 900px; animation: viewIn .3s ease both; position: relative; }
 
   @keyframes viewIn {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-ambient {
+    position: absolute;
+    top: -1.5rem;
+    left: -1.5rem;
+    right: -1.5rem;
+    height: 340px;
+    z-index: -1;
+    overflow: hidden;
+    border-radius: 0 0 24px 24px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+  }
+  .hero-ambient::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background-image: var(--hero-img);
+    background-size: cover;
+    background-position: center;
+    filter: blur(38px) saturate(1.4) brightness(.65);
+    transform: scale(1.15);
+  }
+  .hero-ambient::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(12,12,13,.15) 0%, var(--bg) 100%);
   }
 
   .tracklist-header {
@@ -399,12 +497,13 @@
     gap: 1.5rem;
     margin-bottom: 1.75rem;
     padding-bottom: .5rem;
+    padding-top: 1.5rem;
   }
   .tracklist-cover {
     width: 192px; height: 192px;
     object-fit: cover;
     border-radius: 6px;
-    box-shadow: 0 16px 40px rgba(0,0,0,.55);
+    box-shadow: 0 16px 44px rgba(0,0,0,.65), 0 0 60px rgba(224,38,61,.15);
     flex-shrink: 0;
     background: var(--bg-press);
   }
@@ -413,16 +512,18 @@
     font-size: .7rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: .04em;
+    letter-spacing: .12em;
     margin-bottom: .4rem;
     color: var(--accent);
   }
   .tracklist-info h1 {
-    font-size: clamp(1.8rem, 4vw, 3.5rem);
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: .5rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 400;
+    letter-spacing: .01em;
+    line-height: .95;
+    margin-bottom: .6rem;
+    text-shadow: 0 4px 24px rgba(0,0,0,.4);
   }
   .tracklist-meta {
     font-size: .875rem;
@@ -529,6 +630,7 @@
   }
   .track-row:hover td { background: rgba(255,255,255,.08); }
   .track-row.playing td { background: rgba(224, 38, 61, .12); }
+  .track-row.playing td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
   .track-row.errored { opacity: .4; cursor: not-allowed; }
 
   .track-row td {
@@ -578,8 +680,8 @@
   /* ========== PLAYER BAR ========== */
   .player {
     grid-column: 1 / -1;
-    background: #181818;
-    border-top: 1px solid #282828;
+    background: #131314;
+    border-top: 1px solid #232324;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     align-items: center;
@@ -587,7 +689,26 @@
     gap: 1rem;
     height: var(--player-h);
     z-index: 100;
+    position: relative;
+    overflow: hidden;
   }
+
+  .player::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--now-cover);
+    background-size: cover;
+    background-position: center 30%;
+    filter: blur(28px) saturate(1.6) brightness(.5);
+    transform: scale(1.4);
+    opacity: 0;
+    transition: opacity .5s ease;
+    z-index: 0;
+  }
+  .player.has-cover::before { opacity: .3; }
+
+  .player > * { position: relative; z-index: 1; }
 
   .player-left {
     display: flex;
@@ -605,7 +726,7 @@
   .player-meta { min-width: 0; overflow: hidden; }
   .player-title {
     font-size: .875rem;
-    font-weight: 500;
+    font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1346,6 +1467,7 @@
 
   function renderTracklistBody(record) {
     tracklistContent.innerHTML =
+      '<div class="hero-ambient" id="heroAmbient"></div>' +
       '<div class="tracklist-header">' +
         '<img class="tracklist-cover" src="' + record.cover + '" alt="" onerror="this.onerror=null;this.src=\'' + coverFallback(record.name) + '\'">' +
         '<div class="tracklist-info">' +
@@ -1372,6 +1494,8 @@
       '</table>';
 
     const tbody = document.getElementById('trackItems');
+    const heroAmbient = document.getElementById('heroAmbient');
+    if (heroAmbient) heroAmbient.style.setProperty('--hero-img', "url('" + record.cover + "')");
     record.tracks.forEach(function(track, index) {
       const row = document.createElement('tr');
       row.className = 'track-row';
@@ -1461,6 +1585,8 @@
     playerCoverThumb.src = record.cover;
     playerCoverThumb.style.display = 'block';
     playerCoverThumb.onerror = function() { this.onerror = null; this.src = coverFallback(record.name); };
+    document.getElementById('playerBar').style.setProperty('--now-cover', "url('" + record.cover + "')");
+    document.getElementById('playerBar').classList.add('has-cover');
     refreshTrackHighlight();
   }
 
